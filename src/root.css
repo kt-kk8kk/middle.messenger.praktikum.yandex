@@ -2,6 +2,7 @@
     --inter-font: "Inter", "Helvetica", "Arial", sans-serif;
 	--body-bg: #fff;
 	--box-bg: #fff;
+	--box-shadow: rgba(0, 0, 0, 0.14);
 	--left-col-bg: #fbfbfb;
 	--layout-border: #eaeaea;
 	--text-color: #1e1e1e;

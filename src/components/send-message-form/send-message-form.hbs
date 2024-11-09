@@ -2,14 +2,14 @@
     <div class="send-message__form-clip">
         <span class="material-symbols-outlined">attach_file</span>
         {{#if showModal}}
-            {{#> ModalFunctional ontop=true}}
+            {{#> ModalFunctional ontop="true"}}
                 {{> ModalFunctionalItem href="#" icon="wallpaper" copy="Фото или Видео" }}
                 {{> ModalFunctionalItem href="#" icon="upload_file" copy="Файл" }}
                 {{> ModalFunctionalItem href="#" icon="adjust" copy="Локация" }}
             {{/ ModalFunctional}}
         {{/if}}
     </div>
-    <input class="send-message__form-input" type={{type}} name={{name}} placeholder={{placeholder}} />
+    <input class="send-message__form-input" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}" />
     <button class="send-message__form-button">
         <span class="material-symbols-outlined">arrow_forward</span>
     </button>

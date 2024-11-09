@@ -1,0 +1,25 @@
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+	-webkit-font-smoothing: antialiased;
+	height: 100%;
+}
+
+body {
+	font: 500 1.2rem/1.5rem var(--inter-font);
+	color: var(--text-color);
+	background: var(--body-bg);
+	height: 100%;
+}
+
+a {
+	color: var(--link-color);
+	text-decoration: none;
+}
+
+.h-wrapper {
+	height: 100%;
+}

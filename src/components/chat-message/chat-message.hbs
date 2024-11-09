@@ -1,0 +1,11 @@
+<div class="chat-message__item{{#if you}} chat-message__item-you{{/if}}{{#if avatar}} chat-message__item-avatar{{/if}}">
+    {{#if avatar}}
+        <img src="{{avatar}}" alt="" />
+    {{else}}
+        <div class="chat-message__copy">{{copy}}</div>
+    {{/if}}
+    {{#if badge}}
+        <span class="chat-message__badge chat-message__badge-{{badge}}">{{badge}}</span>
+    {{/if}}
+    <span class="chat-message__time">{{time}}</span>
+</div>

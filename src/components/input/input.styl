@@ -1,0 +1,37 @@
+.box-form
+    &__fieldset
+        margin 16px 0 0
+    &__input-wrapper
+        display block
+        position relative
+    &__input-label
+        position absolute
+        bottom 7px
+        left 0
+        font-size 1.3rem
+        line-height 1.3rem
+        color var(--text-secondary-color)
+        transition all .175s
+    &__input
+        display block
+        border none
+        border-bottom 1px solid var(--form-ele-color)
+        background transparent
+        width 100%
+        height 37px
+        padding 5px 0 0
+        font 1.3rem/1.3rem var(--inter-font)
+        color var(--text-color)
+        &:focus
+            + .box-form__input-label
+                bottom 28px
+                font-size .9rem
+                line-height .9rem
+        &:not(:placeholder-shown)
+            + .box-form__input-label
+                bottom 28px
+                font-size .9rem
+                line-height .9rem
+    &__fieldset-error
+        .box-form__input[type=password]
+            color var(--error-color)

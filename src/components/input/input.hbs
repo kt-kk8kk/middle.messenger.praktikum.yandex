@@ -1,0 +1,11 @@
+<div class="box-form__fieldset{{#if error}} box-form__fieldset-error{{/if}}">
+    <label class="box-form__input-wrapper">
+        <input class="box-form__input" type="{{type}}" name="{{name}}" placeholder="" />
+        <span class="box-form__input-label">{{label}}</span>
+    </label>
+    {{#if error}}
+        {{#if message}}
+            {{> Error }}
+        {{/if}}
+    {{/if}}
+</div>

@@ -1,0 +1,9 @@
+{{#> FormWrapper title="Вход" form="auth"}}
+    {{> Input type="text" name="login" label="Логин" error="error" message="Неверный логин" }}
+    {{> Input type="password" name="password" label="Пароль" }}
+    
+    {{#> ButtonWrapper}}
+        {{> Button label="Войти" class="primary" type="submit" }}
+        {{> Button label="Нет аккаунта?" class="link" type="button" }}
+    {{/ ButtonWrapper}}
+{{/ FormWrapper}}

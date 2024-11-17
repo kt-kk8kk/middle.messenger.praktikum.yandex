@@ -9,3 +9,4 @@ export { ProfileChangeDataPage } from './profile-change-data';
 export { ProfileChangePasswordPage } from './profile-change-password';
 export { Error404Page } from './error-404';
 export { Error500Page } from './error-500';
+

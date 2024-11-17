@@ -5,5 +5,8 @@ export default defineConfig({
     build: {
         outDir: "dist",
         cssCodeSplit: true
+    },
+    server: {
+        port: 3000
     }
 })

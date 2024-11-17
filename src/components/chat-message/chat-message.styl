@@ -1,0 +1,64 @@
+.chat-message
+    &__item
+        max-width 400px
+        border-radius 12px
+        border-top-left-radius 0
+        background var(--chat-message-bg)
+        margin 0 0 10px
+        padding 11px
+        position relative
+        &-avatar
+            padding 0
+            background var(--box-bg)
+            border 1px solid var(--layout-border)
+            border-radius 12px
+            overflow hidden
+            max-width 316px
+            img
+                width 100%
+                height 100%
+                object-fit cover
+                display block
+            .chat-message__time
+                bottom 10px
+                right 10px
+                padding 2px 7px
+                border-radius 30px
+                background var(--chat-time-bg)
+                color var(--btn-color)
+        &-you
+            margin 20px 0 10px
+            align-self flex-end
+            background var(--chat-list-active-color)
+            border-top-left-radius 12px
+            border-bottom-right-radius 0
+            + .chat-message__item-you
+                margin-top 0
+            .chat-message__copy
+                padding-right 52px
+            .chat-message__time
+                color var(--form-ele-color)
+    &__copy
+        display inline
+        padding 0 30px 0 0
+    &__time
+        font-size .9rem
+        line-height 100%
+        display block
+        text-align right
+        color var(--text-secondary-color)
+        position absolute
+        bottom 11px
+        right 11px
+    &__badge
+        position absolute
+        bottom 12px
+        right 39px
+        width 10px
+        height 5px
+        overflow hidden
+        text-indent -9999px
+        outline none
+        &-read
+            background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAoUlEQVR4AWNwL/AhGeunv1fAEEv5YgCiSTbMMPPTfOOMz+9NoQaAsHH2l3jjzM//jbI+1ZNsGFhjxqf3+invDZANA+P0zw1wxUaZn/NBXqHEMLiXjTI+FkAl7oMNxTSsnxjD4Abq578XACo+j81QULgQZxjCQJyGkmYYwkCshoJikjTDEAZiNRTdMFAywTSMsIEIQzM/7YcZBsMgg2CG4cIA7bcx9L0BEhgAAAAASUVORK5CYII=") 0 0 no-repeat
+            background-size 10px 5px

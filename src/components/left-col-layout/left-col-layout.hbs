@@ -1,0 +1,14 @@
+<aside class="cols-layout__aside">
+    <header class="cols-layout__aside-head">
+        <div class="cols-layout__aside-profile">
+            <a class="cols-layout__aside-profile-link" href="">
+                {{link}}
+                <span class="material-symbols-outlined">chevron_right</span>
+            </a>
+        </div>
+        {{> SearchForm type="text" name="message" placeholder="Поиск" }}
+    </header>
+    <div class="cols-layout__aside-body">
+        {{> ChatList chats=chats }}
+    </div>
+</aside>

@@ -1,0 +1,36 @@
+.search
+    &__input-wrap
+        position relative
+    &__input
+        display block
+        width 100%
+        height 32px
+        border none
+        border-radius 5px
+        background var(--form-ele-bg)
+        padding 0 34px
+        font 500 1.2rem/100% var(--inter-font)
+        color var(--text-color)
+        text-align center
+        &:focus
+            text-align left
+            + .search__icon
+                left 10px
+            &::placeholder
+                color transparent
+        &:not(:placeholder-shown)
+            text-align left
+            + .search__icon
+                left 10px
+    &__icon
+        display block
+        width 20px
+        height 20px
+        position absolute
+        top 50%
+        left 102px
+        transform translateY(-50%)
+        transition all .15s
+        color var(--text-secondary-color)
+        .material-symbols-outlined
+            font-size 2.1rem

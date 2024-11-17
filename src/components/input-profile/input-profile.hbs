@@ -1,0 +1,14 @@
+<div class="profile__fieldset{{#if last}} profile__fieldset-last{{/if}}">
+    {{#if link}}
+        <label class="profile__input-wrapper">
+            <span class="profile__input-label{{#if logout}} profile__input-label-logout{{/if}}">
+                <a href="#">{{label}}</a>
+            </span>
+        </label>
+    {{else}}
+        <label class="profile__input-wrapper">
+            <span class="profile__input-label">{{label}}</span>
+            <input class="profile__input" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}" />
+        </label>
+    {{/if}}
+</div>

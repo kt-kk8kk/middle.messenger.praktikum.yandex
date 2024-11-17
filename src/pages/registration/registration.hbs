@@ -1,0 +1,14 @@
+{{#> FormWrapper title="Регистрация" form="reg"}}
+    {{> Input type="text" name="email" label="Почта" }}
+    {{> Input type="text" name="login" label="Логин" }}
+    {{> Input type="text" name="first_name" label="Имя" }}
+    {{> Input type="text" name="second_name" label="Фамилия" }}
+    {{> Input type="tel" name="phone" label="Телефон" }}
+    {{> Input type="password" name="password" label="Пароль" error="error" }}
+    {{> Input type="password" name="password" label="Пароль (ещё раз)" error="error" message="Пароли не совпадают" }}
+    
+    {{#> ButtonWrapper}}
+        {{> Button label="Зарегистрироваться" class="primary" type="submit" }}
+        {{> Button label="Войти" class="link" type="button" }}
+    {{/ ButtonWrapper}}
+{{/ FormWrapper}}

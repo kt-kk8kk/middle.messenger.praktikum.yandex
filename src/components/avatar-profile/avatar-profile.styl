@@ -1,0 +1,36 @@
+.avatar-profile
+    width 130px
+    height 130px
+    border-radius 50%
+    background url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAMAAAC5zwKfAAAAS1BMVEVHcEzLy8vOzs7MzMzNzc3Nzc3Nzc3Hx8fPz8/Pz8/MzMzLy8vMzMzMzMzKysrNzc3MzMzJycnNzc3MzMzLy8vNzc3MzMzMzMzNzc3p0tVzAAAAGXRSTlMAQI/f/8+fIBAgUJDPYHCvcDC/74AfoL+Qb8vVsAAAASVJREFUeAHt2AWy4zAQRdFu6YljZazg/lc6ZahUmNSfdRdwzBbQECuN6ox1NOUVhFJ+9AzEMoOoIJgiCgCg2VNtUQ8Skx08TwL5QUy0ABBJJAagCQBIJj9YkiA18AeBvsuZ5cCwxJD+JwT2GnPFS4BB45CVAC2O4now4LhSD0Yct6oH1zhpUw1mnOSrQcZxWuApr3CUFQAzjnICIBUcyiQB+i2mVlnqb9PtVsBq7yT/h87/5D92AxvYwAb22RqNk3SxuX8H9JzLCjdalTW/AvqoCh5WVPRPgK6zGk9nbNffATkvV3i51TLzJehZlRXer6zZH4HKQCCjDqBU3xtsYAMb2MAGNlBDNEMJolliiOZI9hST/Nb9ICYIlQZvKGwXqE7vebD+A8DxOp+LG+8ZAAAAAElFTkSuQmCC") 50% 50% no-repeat var(--form-ele-bg)
+    background-size 40px 40px
+    margin 0 auto 20px
+    position relative
+    cursor pointer
+    &:hover
+        .avatar-profile__change
+            opacity 1
+    &__img
+        display block
+        width 100%
+        height 100%
+        object-fit cover
+        border-radius 50%
+    &__change
+        display flex
+        align-items center
+        justify-content center
+        width 100%
+        height 100%
+        padding 10px
+        border-radius 50%
+        background var(--avatar-hover-bg)
+        position absolute
+        top 0
+        left 0
+        font-size 1.3rem
+        line-height 1.4rem
+        text-align center
+        color var(--btn-color)
+        opacity 0
+        transition all .175s

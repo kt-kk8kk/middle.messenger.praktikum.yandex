@@ -1,0 +1,20 @@
+:root {
+    --inter-font: "Inter", "Helvetica", "Arial", sans-serif;
+	--body-bg: #fff;
+	--box-bg: #fff;
+	--left-col-bg: #fbfbfb;
+	--layout-border: #eaeaea;
+	--text-color: #1e1e1e;
+	--text-secondary-color: #999;
+	--link-color: #3369f3;
+	--form-ele-color: #3369f3;
+	--form-ele-bg: #efefef;
+	--btn-color: #fff;
+	--error-color: #ff2f2f;
+	--chat-list-active-color: #e4edfd;
+	--chat-message-bg: #f8f8f8;
+	--chat-time-bg: rgba(82, 82, 82, 0.5);
+	--modal-bg: rgba(0, 0, 0, 0.4);
+	--avatar-hover-bg: rgba(0, 0, 0, 0.5);
+	--logout-color: #ff0000;
+}

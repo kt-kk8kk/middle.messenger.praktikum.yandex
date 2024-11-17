@@ -1,0 +1,1 @@
+export { HeadPage } from './head';

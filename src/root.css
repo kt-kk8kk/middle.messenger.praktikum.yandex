@@ -18,4 +18,5 @@
 	--modal-bg: rgba(0, 0, 0, 0.4);
 	--avatar-hover-bg: rgba(0, 0, 0, 0.5);
 	--logout-color: #ff0000;
+	--scrollbar-color: rgba(0, 0, 0, .16) rgba(0, 0, 0, .04);
 }

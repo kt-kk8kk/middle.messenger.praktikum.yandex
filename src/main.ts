@@ -33,7 +33,8 @@ function navigate(page: string) {
             ...context, 
             formState: {
                 login: '',
-                password: ''
+                password: '',
+                newPassword: ''
             },
             errors: {
                 login: '',
@@ -52,7 +53,8 @@ function navigate(page: string) {
 document.addEventListener("DOMContentLoaded", () => navigate("navigation"));
 
 document.addEventListener("click", e => {
-    const page = e.target.getAttribute("page");
+    const target = e?.target as HTMLElement;
+    const page = target?.getAttribute("page");
     if (page) {
         navigate(page);
         e.preventDefault();

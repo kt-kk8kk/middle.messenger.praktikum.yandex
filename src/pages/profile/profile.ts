@@ -4,8 +4,35 @@ import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
 import { emailRules, loginRules, firstNameRules, secondNameRules, phoneRules, passwordRules } from "../../utils/rules";
 
-export default class ProfilePage extends Block {
-    constructor(props) {
+interface ProfilePage {
+    children: { 
+        InputProfileEmail: Block,
+        InputProfileLogin: Block,
+        InputProfileFirstName: Block,
+        InputProfileSecondName: Block,
+        InputProfileDisplayName: Block,
+        InputProfilePhone: Block,
+        InputProfileOldPassword: Block,
+        InputProfileNewPassword: Block,
+        InputProfileConfirmNewPassword: Block
+    }
+    props: ProfilePageProps
+}
+
+interface ProfilePageProps {
+    formState: {
+        login: string
+        password: string
+        newPassword?: string
+    },
+    errors: {
+        login: '',
+        password: ''
+    }
+}
+
+class ProfilePage extends Block {
+    constructor(props: ProfilePageProps) {
         super("div", {
             ...props,
             className: "profile__wrap",
@@ -370,3 +397,6 @@ export default class ProfilePage extends Block {
         `;
     }
 }
+
+
+export default ProfilePage;

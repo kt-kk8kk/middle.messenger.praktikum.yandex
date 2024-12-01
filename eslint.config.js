@@ -9,5 +9,15 @@ export default [
   {languageOptions: { globals: globals.browser }},
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    rules: {
+      "@typescript-eslint/no-unsafe-declaration-merging": "off",
+      "@typescript-eslint/ban-ts-comment": "off"
+    }
+  },
+  {
+    ignores: ["**/core/"]
+  }
+
 ];
 

@@ -26,7 +26,7 @@ Object.entries(Components).forEach(([ name, template ]) => {
 });
 
 function navigate(page: string) {
-    //@ts-ignore
+    //@ts-expect-error код от ментора
     const [source, context] = pages[page];
     if (typeof source === "function") {
         renderDOM(new source({

@@ -4,18 +4,27 @@ import Block from "../../core/block";
 
 interface ChatMessagesFeed {
     props: ChatMessagesFeedProps
+    messages: ChatMessage[]
 }
 interface ChatMessagesFeedProps {
-    messages?: any;
+    messages?: Message[];
     activeChatItemIndex?: number;
+}
+
+interface Message {
+    copy: string
+    status: string
+    time: string
+    pic: string
+    you: boolean
 }
 class ChatMessagesFeed extends Block {
     constructor(props: ChatMessagesFeedProps) {
         super("div", {
             ...props,
             className: `chat-messages__wrap`,
-            messages: props.messages ? props.messages.map((message: any, index: number) => 
-                new ChatMessage({
+            messages: props.messages ? props.messages.map(function(message, index): ChatMessage {
+                return new ChatMessage({
                     ...message,
                     you: message.you,
                     pic: message.pic,
@@ -24,7 +33,7 @@ class ChatMessagesFeed extends Block {
                     time: message.time,
                     active: index === props.activeChatItemIndex,
                 })
-            ) : [],
+            }) : [],
             chatMessageDate: new ChatMessageDate({
                 date: "19 июня",
             }),
@@ -32,10 +41,10 @@ class ChatMessagesFeed extends Block {
     }
 
     render() {
-        const { messages, activeChatItemIndex } = this.props;
+        const { activeChatItemIndex } = this.props;
 
-        if (Array.isArray(messages)) {
-            messages.forEach((message, index) => {
+        if (Array.isArray(this.messages)) {
+            this.messages.forEach((message, index) => {
                 message.setProps({ active: index === activeChatItemIndex });
             });
         }

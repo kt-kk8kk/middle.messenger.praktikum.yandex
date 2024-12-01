@@ -8,10 +8,24 @@ interface ChatListPage {
     props: ChatListPageProps
 }
 interface ChatListPageProps {
-    chats?: any;
+    chats: Chat[];
     activeChatItemIndex: number;
-    activeChat: any;
+    activeChat: Chat;
     onClick: () => void;
+}
+
+interface Chat extends Block {
+    avatar: string
+    you: string
+    copy: string
+    time: string
+    badge: string
+    messageFeed: []
+    name: string
+    status: string
+    props: {
+        active: boolean
+    }
 }
 class ChatListPage extends Block {
     constructor(props: ChatListPageProps) {

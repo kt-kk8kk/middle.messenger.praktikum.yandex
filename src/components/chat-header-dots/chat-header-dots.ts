@@ -26,7 +26,7 @@ interface ChatHeaderDotsProps {
     }
 }
 
-class ChatHeaderDots extends Block {
+class ChatHeaderDots extends Block implements ChatHeaderDots {
     constructor(props: ChatHeaderDotsProps) {
         super("div", {
             ...props,

@@ -3,11 +3,12 @@ import Block from "../../core/block";
 type ChatMessageProps = {
     you?: boolean;
     pic?: string;
-    className: string;
+    className?: string;
     copy?: string;
     status?: string;
     time?: string;
     onClick?: (e: Event) => void;
+    active: boolean
 }
 
 export default class ChatMessage extends Block {

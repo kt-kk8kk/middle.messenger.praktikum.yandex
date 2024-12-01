@@ -1,7 +1,13 @@
 import Block from "../../core/block";
 
 type ChatListItemProps = {
-    className: string;
+    avatar: string;
+    name: string;
+    copy: string;
+    time: string;
+    you: string;
+    pic: string;
+    status: string;
     onClick?: (e: Event) => void;
 }
 

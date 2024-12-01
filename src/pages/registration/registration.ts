@@ -60,7 +60,7 @@ class RegPage extends Block {
                 type: "text",
                 name: "email",
                 label: "Почта",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const { error } = validateField(value, emailRules);
 
@@ -80,7 +80,7 @@ class RegPage extends Block {
                 type: "text",
                 name: "login",
                 label: "Логин",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const { error } = validateField(value, loginRules);
 
@@ -100,7 +100,7 @@ class RegPage extends Block {
                 type: "text",
                 name: "first_name",
                 label: "Имя",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const { error } = validateField(value, firstNameRules);
 
@@ -120,7 +120,7 @@ class RegPage extends Block {
                 type: "text",
                 name: "second_name",
                 label: "Фамилия",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const { error } = validateField(value, secondNameRules);
 
@@ -140,7 +140,7 @@ class RegPage extends Block {
                 type: "tel",
                 name: "phone",
                 label: "Телефон",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const { error } = validateField(value, phoneRules);
 
@@ -160,7 +160,7 @@ class RegPage extends Block {
                 type: "password",
                 name: "password",
                 label: "Пароль",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const { error } = validateField(value, passwordRules);
 
@@ -180,7 +180,7 @@ class RegPage extends Block {
                 type: "password",
                 name: "confirm_password",
                 label: "Пароль (ещё раз)",
-                onBlur: (e?: any) => {
+                onBlur: (e: Event) => {
                     const value = (e.target as HTMLInputElement).value;
                     const password = this.props.formState.password;
 

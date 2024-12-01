@@ -30,6 +30,7 @@ export default function registerComponent<Props extends PropsBlock>(
              * Костыль для того, чтобы передавать переменные
              * внутрь блоков вручную подменяя значение
              */
+            // eslint-disable-next-line
             (Object.keys(hash) as any).forEach((key: keyof Props) => {
                 if (this[key] && typeof this[key] === "string") {
                     hash[key] = hash[key].replace(

@@ -12,6 +12,9 @@ interface Chat extends Block {
     avatar: string
     you: string
     copy: string
+    name: string
+    status: string
+    messageFeed: ChatListItemProps[]
     time: string
     badge: string
     props: {
@@ -19,9 +22,20 @@ interface Chat extends Block {
     }
 }
 interface ChatListProps {
-    chats?: any;
+    chats: Chat[];
     activeChatItemIndex?: number;
     onChangeActiveChat: (index: number) => void;
+}
+
+type ChatListItemProps = {
+    avatar: string;
+    name: string;
+    copy: string;
+    time: string;
+    you: string;
+    pic: string;
+    status: string;
+    onClick?: (e: Event) => void;
 }
 
 class ChatList extends Block {
@@ -29,7 +43,7 @@ class ChatList extends Block {
         super("ul", {
             ...props,
             className: `chat-list`,
-            chats: props.chats.map((chat: any, index: number) => 
+            chats: props.chats.map((chat: Chat, index: number) => 
                 new ChatListItem({
                     ...chat,
                     avatar: chat.avatar,

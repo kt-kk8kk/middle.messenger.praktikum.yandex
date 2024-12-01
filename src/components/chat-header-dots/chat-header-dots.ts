@@ -22,7 +22,7 @@ export default class ChatHeaderDots extends Block {
             ChatHeaderDotsEle: new ChatHeaderDotsEle({
                 dots: "...",
                 onClick: () => {
-                    let isVisible = this.props.isModalFunctionVisible
+                    const isVisible = this.props.isModalFunctionVisible
                     this.setProps({
                         isModalFunctionVisible: !isVisible,
                     });

@@ -18,7 +18,7 @@ export default class Input extends Block {
                 placeholder: "",
                 type: props.type,
                 name: props.name,
-                value: props.value
+                value: props.value || ""
             },
         });
     }

@@ -1,12 +1,12 @@
 import Block from "../../core/block"; 
 
-type ButtonProps = {
+type NavigationPageProps = {
     className: string;
     onClick?: (event: Event) => void;
 }
 
-export default class Button extends Block {
-    constructor(props: ButtonProps) {
+export default class NavigationPage extends Block {
+    constructor(props: NavigationPageProps) {
         super("main", {
             ...props,
             className: `box-form__main`,

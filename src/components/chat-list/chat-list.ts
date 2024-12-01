@@ -40,7 +40,6 @@ class ChatList extends Block {
                     status: chat.status,
                     pic: chat.messageFeed[chat.messageFeed.length - 1].pic,
                     onClick: () => {
-                        console.trace({index});
                         props.onChangeActiveChat(index);
                         this.setProps({ activeChatItemIndex: index });
                     }

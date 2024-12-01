@@ -8,6 +8,7 @@ type InputFieldProps = {
     label: string;
     error?: string;
     value?: string;
+    placeholder?: string;
     onChange?: (e: Event) => void;
     onBlur?: (e: Event) => void;
 };

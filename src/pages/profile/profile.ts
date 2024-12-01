@@ -1,4 +1,4 @@
-import { InputProfile, AvatarProfile, Button, ModalFullWidth, ChooseFile } from "../../components";
+import { InputProfile, AvatarProfile, Button, ModalFullWidth, ChooseFile, ProfileBack } from "../../components";
 import { InputProfileDefault, InputProfileLink } from "../../components/input-profile";
 import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
@@ -343,6 +343,7 @@ class ProfilePage extends Block {
                     });
                 },
             }),
+            ProfileBack: new ProfileBack({}),
         })
     }
 
@@ -390,7 +391,9 @@ class ProfilePage extends Block {
                     </div>
                 </form>
             </main>
-            {{> ProfileBack }}
+
+            {{{ ProfileBack }}}
+
             {{#if isAvatarChangeVisible}}
                 {{{ ModalFullWidthChangeAvatar }}}
             {{/if}}

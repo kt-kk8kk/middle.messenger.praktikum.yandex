@@ -1,5 +1,5 @@
 import Block from "../../core/block";
-import { ChatList, ChatHeaderDots, ChatMessagesFeed } from "../../components";
+import { ChatList, ChatHeaderDots, ChatMessagesFeed, SearchForm, SendMessageForm } from "../../components";
 
 interface ChatListPage {
     children: { 
@@ -48,6 +48,18 @@ class ChatListPage extends Block {
                     });
                 },
             }),
+            SearchForm: new SearchForm({
+                ...props,
+                type: "text",
+                name: "message",
+                placeholder: "Поиск"
+            }),
+            SendMessageForm: new SendMessageForm({
+                ...props,
+                type: "text",
+                name: "message",
+                placeholder: "Сообщение"
+            }),
         });
     }
 
@@ -63,7 +75,8 @@ class ChatListPage extends Block {
                             <span class="material-symbols-outlined">chevron_right</span>
                         </a>
                     </div>
-                    {{> SearchForm type="text" name="message" placeholder="Поиск" }}
+
+                    {{{ SearchForm }}}
                 </header>
                 <div class="cols-layout__aside-body">
                     {{{ ChatList }}}
@@ -100,7 +113,7 @@ class ChatListPage extends Block {
 
                         <footer class="chat__footer">
                             <div class="chat__footer-inner">
-                                {{> SendMessageForm type="text" name="message" placeholder="Сообщение" }}
+                                {{{ SendMessageForm }}}
                             </div>
                         </footer>
                     </div>

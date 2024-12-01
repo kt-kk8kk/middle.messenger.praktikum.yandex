@@ -4,9 +4,10 @@ type InputProps = {
     className: string;
     type: string;
     name: string;
-    label: string;
+    label?: string;
     events?: any;
     value?: string;
+    placeholder?: string;
     onChange?: () => void;
     onBlur?: () => void;
 };
@@ -15,7 +16,7 @@ export default class Input extends Block {
         super("input", {
             ...props,
             attrs: {
-                placeholder: "",
+                placeholder: props.placeholder || "",
                 type: props.type,
                 name: props.name,
                 value: props.value || ""

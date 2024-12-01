@@ -3,8 +3,38 @@ import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
 import { emailRules, loginRules, firstNameRules, secondNameRules, phoneRules, passwordRules } from "../../utils/rules";
 
-export default class RegPage extends Block {
-    constructor(props) {
+interface RegPage {
+    children: { 
+        InputEmail: Block,
+        InputLogin: Block,
+        InputFirstName: Block,
+        InputSecondName: Block,
+        InputDisplayName: Block,
+        InputPhone: Block,
+        InputPassword: Block,
+        InputConfirmPassword: Block
+    }
+    props: RegPageProps
+}
+
+interface RegPageProps {
+    formState: {
+        login: string
+        password: string
+        email: string
+        first_name: string
+        second_name: string
+        phone: string
+        confirm_password: string
+    },
+    errors: {
+        login: '',
+        password: ''
+    }
+}
+
+class RegPage extends Block {
+    constructor(props: RegPageProps) {
         super("main", {
             ...props,
             formState: {
@@ -252,3 +282,5 @@ export default class RegPage extends Block {
         `;
     }
 }
+
+export default RegPage;

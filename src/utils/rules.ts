@@ -5,7 +5,7 @@ export const firstNameRules = {
     maxLength: 50,
     regex: /^[A-ЯЁA-Za-zЁа-яё-]+$/, // Латиница, кириллица, дефис
     required: true,
-    customValidator: (value) => {
+    customValidator: (value: string) => {
         // Проверяем, что первая буква заглавная, а затем могут идти строчные буквы
         const regex = /^[A-ЯЁA-Za-zЁа-яё]+$/;
         if (value && value.length > 0) {
@@ -25,7 +25,7 @@ export const secondNameRules = {
     maxLength: 50,
     regex: /^[A-ЯЁA-Za-zЁа-яё-]+$/, // Латиница, кириллица, дефис
     required: true,
-    customValidator: (value) => {
+    customValidator: (value: string) => {
         // Проверяем, что первая буква заглавная, а затем могут идти строчные буквы
         const regex = /^[A-ЯЁA-Za-zЁа-яё]+$/;
         if (value && value.length > 0) {

@@ -28,7 +28,7 @@ interface RegPageProps {
         confirm_password: string
     },
     errors: {
-        login: '',
+        login: ''
         password: ''
     }
 }

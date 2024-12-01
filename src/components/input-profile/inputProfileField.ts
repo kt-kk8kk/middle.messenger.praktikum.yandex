@@ -3,8 +3,8 @@ import Input from "../input/input";
 
 type InputProfileFieldProps = {
     className?: string;
-    name?: string;
-    type?: string;
+    name: string;
+    type: string;
     label: string;
     error?: string;
     value?: string;

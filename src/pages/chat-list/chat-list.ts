@@ -1,14 +1,19 @@
 import Block from "../../core/block";
 import { ChatList, ChatHeaderDots, ChatMessagesFeed } from "../../components";
 
+interface ChatListPage {
+    children: { 
+        ChatMessagesFeed: Block
+    }
+    props: ChatListPageProps
+}
 interface ChatListPageProps {
     chats?: any;
     activeChatItemIndex: number;
     activeChat: any;
     onClick: () => void;
 }
-
-export default class ChatListPage extends Block {
+class ChatListPage extends Block {
     constructor(props: ChatListPageProps) {
         super("div", {
             ...props,
@@ -104,3 +109,5 @@ export default class ChatListPage extends Block {
         `;
     }
 }
+
+export default ChatListPage;

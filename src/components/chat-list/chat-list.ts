@@ -1,13 +1,30 @@
 import { ChatListItem } from "../chat-list-item";
 import Block from "../../core/block";
 
+interface ChatList {
+    children: { 
+        chats: Chat[]
+    }
+    props: ChatListProps
+}
+
+interface Chat extends Block {
+    avatar: string
+    you: string
+    copy: string
+    time: string
+    badge: string
+    props: {
+        active: boolean
+    }
+}
 interface ChatListProps {
     chats?: any;
     activeChatItemIndex?: number;
-    onChangeActiveChat?: (index: number) => void;
+    onChangeActiveChat: (index: number) => void;
 }
 
-export default class ChatList extends Block {
+class ChatList extends Block {
     constructor(props: ChatListProps) {
         super("ul", {
             ...props,
@@ -36,7 +53,7 @@ export default class ChatList extends Block {
         const { activeChatItemIndex } = this.props;
         const { chats } = this.children;
 
-        chats.forEach((chat, index) => {
+        chats.forEach((chat: Chat, index: number) => {
             if (index === activeChatItemIndex) {
                 chat.setProps({ active: true });
                 return;
@@ -54,3 +71,5 @@ export default class ChatList extends Block {
         `;
     }
 }
+
+export default ChatList;

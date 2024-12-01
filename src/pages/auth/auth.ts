@@ -3,8 +3,32 @@ import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
 import { loginRules, passwordRules } from "../../utils/rules";
 
-export default class AuthPage extends Block {
-    constructor(props) {
+interface AuthPage {
+    children: { 
+        InputEmail: Block,
+        InputLogin: Block,
+        InputFirstName: Block,
+        InputSecondName: Block,
+        InputDisplayName: Block,
+        InputPhone: Block,
+        InputPassword: Block,
+        InputConfirmPassword: Block
+    }
+    props: AuthPageProps
+}
+
+interface AuthPageProps {
+    formState: {
+        login: string
+        password: string
+    },
+    errors: {
+        login: ''
+        password: ''
+    }
+}
+class AuthPage extends Block {
+    constructor(props: AuthPageProps) {
         super("main", {
             ...props,
             formState: {
@@ -115,3 +139,5 @@ export default class AuthPage extends Block {
         `;
     }
 }
+
+export default AuthPage;

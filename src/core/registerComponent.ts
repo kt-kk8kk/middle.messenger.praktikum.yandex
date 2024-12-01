@@ -1,3 +1,5 @@
+ // @ts-nocheck
+ 
 import Block from "./block";
 import Handlebars, { HelperOptions } from "handlebars";
 

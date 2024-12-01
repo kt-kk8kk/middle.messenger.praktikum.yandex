@@ -6,14 +6,27 @@ import { ModalFullWidth, Input } from "../../components";
 import { validateField } from "../../utils/validation";
 import { loginRules } from "../../utils/rules";
 
+interface ChatHeaderDots {
+    children: { 
+        InputLogin: Block;
+    }
+    props: ChatHeaderDotsProps
+}
 interface ChatHeaderDotsProps {
     onClick?: () => void;
     onClose?: () => void;
     className?: string;
     dots?: string;
+    isModalFunctionVisible?: Block;
+    formState?: {
+        login: string
+    },
+    errors?: {
+        login: ''
+    }
 }
 
-export default class ChatHeaderDots extends Block {
+class ChatHeaderDots extends Block {
     constructor(props: ChatHeaderDotsProps) {
         super("div", {
             ...props,
@@ -141,3 +154,5 @@ export default class ChatHeaderDots extends Block {
         `;
     }
 }
+
+export default ChatHeaderDots;

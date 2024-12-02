@@ -1,0 +1,6 @@
+{
+    "extends": "stylelint-stylus/recommended",
+    "ignoreFiles": [
+        "build/*"
+    ]
+}

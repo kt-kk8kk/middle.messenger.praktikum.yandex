@@ -4,7 +4,6 @@ import { ErrorWindow } from "../../components";
 type Error500PageProps = {
     className: string;
 }
-
 export default class Error500Page extends Block {
     constructor(props: Error500PageProps) {
         super("main", {
@@ -13,8 +12,7 @@ export default class Error500Page extends Block {
             ErrorWindow: new ErrorWindow({
                 title: "500",
                 copy: "Мы уже фиксим",
-                href: "#",
-                link: "Назад к чатам",
+                router: window.router,
             }),
         });
     }

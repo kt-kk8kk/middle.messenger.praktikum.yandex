@@ -1,8 +1,52 @@
-import { InputProfile, AvatarProfile, Button, ModalFullWidth, ChooseFile, ProfileBack } from "../../components";
+import { InputProfile, AvatarProfile, AvatarProfileUpdate, Button, ModalFullWidth, ChooseFile, ProfileBack, Spinner } from "../../components";
 import { InputProfileDefault, InputProfileLink } from "../../components/input-profile";
 import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
 import { emailRules, loginRules, firstNameRules, secondNameRules, phoneRules, passwordRules } from "../../utils/rules";
+import { ROUTER } from "../../utils/constants";
+import Router from "../../core/Router";
+import { withRouter } from "../../utils/withRouter";
+import { connect } from "../../utils/connect";
+import * as logoutServices from "../../services/logout";
+import * as userServices from "../../services/user";
+import * as profileServices from "../../services/profile";
+import * as passwordServices from "../../services/password";
+
+const apiUrl = "https://ya-praktikum.tech/api/v2/";
+
+const InputProfileDefaultLogin = new InputProfileDefault({
+    label: "Логин",
+    value: ""
+})
+
+const InputProfileDefaultEmail = new InputProfileDefault({
+    label: "Почта",
+    value: "",
+});
+
+const InputProfileDefaultFirstName = new InputProfileDefault({
+    label: "Имя",
+    value: "",
+});
+
+const InputProfileDefaultSecondName = new InputProfileDefault({
+    label: "Фамилия",
+    value: "",
+});
+
+const InputProfileDefaultDisplayName = new InputProfileDefault({
+    label: "Имя в чате",
+    value: "",
+});
+
+const InputProfileDefaultPhone = new InputProfileDefault({
+    label: "Телефон",
+    value: "",
+});
+
+const AvatarProfileDefault = new AvatarProfile({
+    avatar: "",
+});
 
 interface ProfilePage {
     children: { 
@@ -20,14 +64,38 @@ interface ProfilePage {
 }
 
 interface ProfilePageProps {
+    router: Router,
     formState: {
+        email: string
         login: string
-        password: string
-        newPassword?: string
+        first_name:	string
+        second_name: string
+        display_name: string
+        phone: string
+        oldPassword: string
+        newPassword: string
+        confirmNewPassword?: string
     },
     errors: {
-        login: '',
-        password: ''
+        email: ""
+        login: ""
+        first_name:	""
+        second_name: ""
+        display_name: ""
+        phone: ""
+        password: ""
+        newPassword?: ""
+        confirmNewPassword?: ""
+    },
+    user: {
+        id:	number
+        email: string
+        login: string
+        first_name:	string
+        second_name: string
+        display_name: string
+        phone: string
+        avatar:	object
     }
 }
 
@@ -62,7 +130,8 @@ class ProfilePage extends Block {
             isDataChangeVisible: false,
             isPasswordChangeVisible: false,
             isAvatarChangeVisible: false,
-            AvatarProfile: new AvatarProfile({
+            AvatarProfileDefault,
+            AvatarProfileUpdate: new AvatarProfileUpdate({
                 change: "Поменять аватар",
                 onClick: () => {
                     this.setProps({
@@ -75,30 +144,12 @@ class ProfilePage extends Block {
                     });
                 },
             }),
-            InputProfileDefaultEmail: new InputProfileDefault({
-                label: "Почта",
-                value: "pochta@yandex.ru",
-            }),
-            InputProfileDefaultLogin: new InputProfileDefault({
-                label: "Логин",
-                value: "ivanivanov",
-            }),
-            InputProfileDefaultFirstName: new InputProfileDefault({
-                label: "Имя",
-                value: "Иван",
-            }),
-            InputProfileDefaultSecondName: new InputProfileDefault({
-                label: "Фамилия",
-                value: "Иванов",
-            }),
-            InputProfileDefaultDisplayName: new InputProfileDefault({
-                label: "Имя в чате",
-                value: "Ivan",
-            }),
-            InputProfileDefaultPhone: new InputProfileDefault({
-                label: "Телефон",
-                value: "+7 (909) 967 30 30",
-            }),
+            InputProfileDefaultEmail,
+            InputProfileDefaultLogin,
+            InputProfileDefaultFirstName,
+            InputProfileDefaultSecondName,
+            InputProfileDefaultDisplayName,
+            InputProfileDefaultPhone,
             InputProfileEmail: new InputProfile({
                 type: "text",
                 name: "email",
@@ -290,16 +341,92 @@ class ProfilePage extends Block {
                 label: "Сохранить",
                 type: "submit",
                 className: "primary",
-                onClick: () => {
-                    console.log("Save Data");
+                onClick: (e: Event) => {
+                    e.preventDefault();
+
+                    const { formState } = this.props;
+                    let errors = {};
+
+                    const profileEmailValidation = validateField(formState.email, emailRules);
+                    const profileLoginValidation = validateField(formState.login, loginRules);
+                    const profileFirstNameValidation = validateField(formState.first_name, firstNameRules);
+                    const profileSecondNameValidation = validateField(formState.second_name, secondNameRules);
+                    const profilePhoneValidation = validateField(formState.phone, phoneRules);
+
+                    this.children.InputProfileEmail.setProps({ error: profileEmailValidation.error });
+                    this.children.InputProfileLogin.setProps({ error: profileLoginValidation.error });
+                    this.children.InputProfileFirstName.setProps({ error: profileFirstNameValidation.error });
+                    this.children.InputProfileSecondName.setProps({ error: profileSecondNameValidation.error });
+                    this.children.InputProfilePhone.setProps({ error: profilePhoneValidation.error });
+
+                    errors = {
+                        email: profileEmailValidation.error,
+                        login: profileLoginValidation.error,
+                        first_name: profileFirstNameValidation.error,
+                        second_name: profileSecondNameValidation.error,
+                        phone: profilePhoneValidation.error,
+                    };
+
+                    if (!Object.values(errors).some((error) => error)) {
+                        const data = {
+                            email: formState.email,
+                            login: formState.login,
+                            first_name: formState.first_name,
+                            second_name: formState.second_name,
+                            phone: formState.phone,
+                        };
+                
+                        profileServices.profile(data);
+                    };
+
+                    this.setProps({
+                        isDefaultVisible: true,
+                        isDataChangeVisible: false,
+                        isPasswordChangeVisible: false,
+                        isAvatarChangeVisible: false,
+                    });
                 },
             }),
             SavePasswordButton: new Button({
                 label: "Сохранить",
                 type: "submit",
                 className: "primary",
-                onClick: () => {
-                    console.log("Save Password");
+                onClick: (e: Event) => {
+                    e.preventDefault();
+
+                    const { formState } = this.props;
+                    let errors = {};
+
+                    const profileOldPasswordValidation = validateField(formState.oldPassword, passwordRules);
+                    const profileNewPasswordValidation = validateField(formState.newPassword, passwordRules);
+                    const profileConfirmNewPasswordValidation = formState.confirmNewPassword !== formState.newPassword
+                        ? { error: "Пароли не совпадают" }
+                        : { error: "" };
+
+                    this.children.InputProfileOldPassword.setProps({ error: profileOldPasswordValidation.error });
+                    this.children.InputProfileNewPassword.setProps({ error: profileNewPasswordValidation.error });
+                    this.children.InputProfileConfirmNewPassword.setProps({ error: profileConfirmNewPasswordValidation.error });
+
+                    errors = {
+                        password: profileOldPasswordValidation.error,
+                        newPassword: profileNewPasswordValidation.error,
+                        confirmNewPassword: profileConfirmNewPasswordValidation.error,
+                    };
+
+                    if (!Object.values(errors).some((error) => error)) {
+                        const data = {
+                            oldPassword: formState.oldPassword,
+                            newPassword: formState.newPassword
+                        };
+                
+                        passwordServices.password(data);
+                        this.setProps({
+                            isDefaultVisible: true,
+                            isDataChangeVisible: false,
+                            isPasswordChangeVisible: false,
+                            isAvatarChangeVisible: false,
+                        });
+                    };
                 },
             }),
             InputProfileLinkChangeData: new InputProfileLink({
@@ -324,36 +451,151 @@ class ProfilePage extends Block {
                         isAvatarChangeVisible: false,
                     });
                 },
-                
             }),
             InputProfileLinkLogout: new InputProfileLink({
                 logout: true,
                 label: "Выйти",
+                onClick: () => {
+                    logoutServices.logout({});
+                },
                 
             }),
             ModalFullWidthChangeAvatar: new ModalFullWidth({
                 buttonLabel: "Поменять",
                 title: "Загрузите файл",
+                id: "file-form",
                 body: new ChooseFile({
                     file: "Выбрать файл на компьютере",
+                    onChange: () => {
+                        const actualBtn = document.getElementById("choose-file__upload") as HTMLInputElement;
+                        const fileChosen = document.getElementsByClassName("choose-file__chosen")[0] as HTMLElement;
+                        const fileLink = document.getElementsByClassName("choose-file__link")[0] as HTMLElement;
+                        if (fileLink) {
+                            fileLink.style.display = "block";
+                        }
+                        if (fileChosen) {
+                            fileChosen.style.display = "none";
+                        }
+
+                        if (actualBtn) {
+                            actualBtn.addEventListener("change", function() {
+                                if (this.files && this.files[0]) {
+                                    if (fileLink) {
+                                        fileLink.style.display = "none";
+                                    }
+                                    if (fileChosen) {
+                                        fileChosen.style.display = "block";
+                                        fileChosen.textContent = this.files[0].name;
+                                    }
+                                } else {
+                                    if (fileLink) {
+                                        fileLink.style.display = "block";
+                                    }
+                                    if (fileChosen) {
+                                        fileChosen.style.display = "none";
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }),
+                onClick: (event: Event) => {
+                    event.preventDefault();
+                    const host = "https://ya-praktikum.tech";
+                    const myUserForm = document.getElementById("file-form");
+                    
+                    if (myUserForm instanceof HTMLFormElement) {
+                        const form = new FormData(myUserForm);
+                        fetch(`${host}/api/v2/user/profile/avatar`, {
+                            method: "PUT",
+                            credentials: "include",
+                            mode: "cors",
+                            body: form,
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            AvatarProfileDefault.setProps({
+                                avatar: `${apiUrl}resources${data.avatar}`,
+                            })
+                            return data;
+                        });
+                        this.setProps({
+                            isAvatarChangeVisible: false,
+                        });
+                    } else {
+                        console.error("Form not found!");
+                    }
+                },
                 onClose: () => {
                     this.setProps({
                         isAvatarChangeVisible: false,
                     });
                 },
             }),
-            ProfileBack: new ProfileBack({}),
+            ProfileBack: new ProfileBack({
+                onClick: () => {
+                    props.router.go(ROUTER.messenger);
+                },
+            }),
+            Spinner: new Spinner({
+                className: "box-form__spinner",
+            }),
         })
+    }
+
+    componentDidMount(oldProps: any): void {
+
+        userServices.fetchUser().then(() => {
+            const user = this.props.user;
+
+            if (user) {
+                InputProfileDefaultLogin.setProps({
+                    value: user.login
+                });
+
+                InputProfileDefaultEmail.setProps({
+                    value: user.email
+                });
+
+                InputProfileDefaultFirstName.setProps({
+                    value: user.first_name
+                })
+
+                InputProfileDefaultSecondName.setProps({
+                    value: user.second_name
+                })
+
+                InputProfileDefaultDisplayName.setProps({
+                    value: user.display_name
+                })
+
+                InputProfileDefaultPhone.setProps({
+                    value: user.phone
+                })
+                
+                AvatarProfileDefault.setProps({
+                    avatar: `${apiUrl}resources${user.avatar}`,
+                })
+            }
+
+        });
+
     }
 
     public render(): string {
         return `
             <main class="profile__box">
                 <form class="profile__form">
-                    {{{ AvatarProfile }}}
-                    <h2 class="profile__name">Иван</h2>
+                    <div class="avatar-profile">
+                        {{{ AvatarProfileDefault }}}
+                         {{{ AvatarProfileUpdate }}}
+                    </div>
+                    <h2 class="profile__name">{{{user.login}}}</h2>
                     <div class="profile__form-inner">
+                        {{#if isLoading}}
+                            {{{ Spinner }}}
+                        {{/if}}
+
                         {{#if isDefaultVisible}}
                             {{{ InputProfileDefaultEmail }}}
                             {{{ InputProfileDefaultLogin }}}
@@ -362,6 +604,7 @@ class ProfilePage extends Block {
                             {{{ InputProfileDefaultDisplayName }}}
                             {{{ InputProfileDefaultPhone }}}
                         {{/if}}
+
                         {{#if isDataChangeVisible}}
                             {{{ InputProfileEmail }}}
                             {{{ InputProfileLogin }}}
@@ -370,6 +613,7 @@ class ProfilePage extends Block {
                             {{{ InputProfileDisplayName }}}
                             {{{ InputProfilePhone }}}
                         {{/if}}
+
                         {{#if isPasswordChangeVisible}}
                             {{{ InputProfileOldPassword }}}
                             {{{ InputProfileNewPassword }}}
@@ -382,9 +626,11 @@ class ProfilePage extends Block {
                             {{{ InputProfileLinkChangePassword }}}
                             {{{ InputProfileLinkLogout }}}
                         {{/if}}
+
                         {{#if isDataChangeVisible}}
                             {{{ SaveDataButton }}}
                         {{/if}}
+
                         {{#if isPasswordChangeVisible}}
                             {{{ SavePasswordButton }}}
                         {{/if}}
@@ -401,5 +647,12 @@ class ProfilePage extends Block {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        isLoading: state.isLoading,
+        loginError: state.loginError,
+        user: state.user
+    };
+};
 
-export default ProfilePage;
+export default withRouter(connect(mapStateToProps)(ProfilePage));

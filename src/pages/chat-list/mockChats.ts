@@ -1,6 +1,6 @@
 export default [
     {
-        avatar: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+        avatar: "/src/assets/message-img.jpg",
         name: "Андрей",
         badge: "2",
         messageFeed: [
@@ -9,7 +9,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -35,7 +35,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -61,7 +61,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -89,7 +89,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -114,7 +114,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -139,7 +139,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -164,7 +164,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -189,7 +189,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {
@@ -214,7 +214,7 @@ export default [
                 time: "11:56"
             },
             {
-                pic: "https://velvety-croissant-6789fd.netlify.app/assets/message-img-Bx03TAvJ.jpg",
+                pic: "/src/assets/message-img.jpg",
                 time: "11:56"
             },
             {

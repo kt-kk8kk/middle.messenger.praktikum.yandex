@@ -7,8 +7,10 @@ type ChatMessageProps = {
     copy?: string;
     status?: string;
     time?: string;
+    date?: string;
     onClick?: (e: Event) => void;
-    active: boolean
+    active: boolean;
+    currentUserId?: number;
 }
 
 export default class ChatMessage extends Block {
@@ -21,11 +23,13 @@ export default class ChatMessage extends Block {
             copy: props.copy,
             status: props.status,
             time: props.time,
+            date: props.date,
         });
     }
 
     public render(): string {
         return `
+            <div class="chat-message__date">{{date}}</div>
             {{#if pic}}
                 <img src="{{pic}}" alt="" />
             {{else}}

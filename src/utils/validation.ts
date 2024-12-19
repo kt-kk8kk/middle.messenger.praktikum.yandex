@@ -63,6 +63,10 @@ export function validateField(value: string, rules: ValidationRules): Validation
         error = "Номер телефона должен содержать от 10 до 15 цифр и может начинаться с плюса.";
     }
 
+    // return {
+    //     isValid: true
+    // };
+
     return {
         isValid: !error,
         error,

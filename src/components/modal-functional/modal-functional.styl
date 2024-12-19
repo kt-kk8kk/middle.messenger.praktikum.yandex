@@ -1,13 +1,17 @@
 .modal-functional
     &__wrap
+        min-width 180px
         background var(--box-bg)
         box-shadow 0 0 6px var(--box-shadow)
         border-radius 12px
         position absolute
-        top calc(100% + 25px)
+        top calc(100% + 15px)
         right -10px
         padding 8px
         z-index 8001
+        &.left-position
+            right auto
+            left 0
         &-ontop
             top auto
             right auto

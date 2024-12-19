@@ -4,7 +4,6 @@ import { ErrorWindow } from "../../components";
 type Error404PageProps = {
     className: string;
 }
-
 export default class Error404Page extends Block {
     constructor(props: Error404PageProps) {
         super("main", {
@@ -13,8 +12,7 @@ export default class Error404Page extends Block {
             ErrorWindow: new ErrorWindow({
                 title: "404",
                 copy: "Не туда попали",
-                href: "#",
-                link: "Назад к чатам",
+                router: window.router,
             }),
         });
     }

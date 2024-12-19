@@ -109,6 +109,7 @@ export default class Block {
         if (!response) {
             return;
         }
+
         this._render();
     }
 

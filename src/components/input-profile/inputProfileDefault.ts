@@ -10,9 +10,7 @@ export default class InputProfileDefault extends Block {
     constructor(props: InputProfileDefaultProps) {
         super("div", {
             ...props,
-            className: "profile__fieldset",
-            label: props.label,
-            value: props.value,
+            className: "profile__fieldset"
         });
     }
 

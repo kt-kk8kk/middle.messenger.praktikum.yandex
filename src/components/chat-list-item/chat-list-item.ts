@@ -6,8 +6,9 @@ type ChatListItemProps = {
     copy: string;
     time: string;
     you: string;
-    pic: string;
+    pic?: string;
     status: string;
+    badge: number;
     onClick?: (e: Event) => void;
 }
 

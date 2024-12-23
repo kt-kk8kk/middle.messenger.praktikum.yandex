@@ -1,11 +1,17 @@
 import UserApi from "../api/user";
+import {
+    findUserRequest,
+} from "../api/type";
 
 const userApi = new UserApi();
 
-export const search = async (model) => {
+export const search = async (model: findUserRequest) => {
     window.store.set({ isLoading: true });
     try {
-        await userApi.search(model);
+        const user = await userApi.search(model);
+
+        return user;
+
     } catch (responsError) {
         if (responsError instanceof Response) {
             const error = await responsError.json();

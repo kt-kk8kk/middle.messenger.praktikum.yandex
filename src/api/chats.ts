@@ -5,7 +5,9 @@ import {
     ChatResponse,
     ChatsAddDTO,
     ChatsDeleteDTO,
-    ChatsAddUserDTO
+    ChatsAddUserDTO,
+    ChatsDeleteUserDTO,
+    chatsGetUsersDTO,
 } from "./type";
 
 const chatsApi = new HTTPTransport("/");
@@ -30,7 +32,14 @@ export default class ChatsApi {
         return chatsApi.put("/chats/users", { data });
     }
 
-    async chatsDeleteUser(): Promise<void | APIError> {
-        return chatsApi.delete("/chats/users");
+    async chatsDeleteUser(data: ChatsDeleteUserDTO): Promise<void | APIError> {
+        return chatsApi.delete("/chats/users", { data });
+    }
+
+    async chatsGetUsers(data: chatsGetUsersDTO): Promise<ChatResponse | APIError> {
+        const { chatId } = data;
+        const url = `/chats/${chatId}/users`;
+        const response = await chatsApi.get<ChatResponse>(url);
+        return response;
     }
 }

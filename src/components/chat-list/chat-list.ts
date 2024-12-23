@@ -19,12 +19,16 @@ interface Chat extends Block {
     badge: string
     title: string
     unread_count: number
+    last_message: {
+        time: string
+        content: string
+    }
     props: {
         active: boolean
     }
 }
 interface ChatListProps {
-    chats: Chat[];
+    chats?: Chat[];
     activeChatItemIndex?: number;
     onChangeActiveChat: (index: number) => void;
 }
@@ -37,7 +41,7 @@ type ChatListItemProps = {
     you?: string;
     pic?: string;
     status?: string;
-    badge: number;
+    badge?: number;
     onClick?: (e: Event) => void;
 }
 
@@ -49,14 +53,33 @@ class ChatList extends Block {
         });
     }
 
-    componentDidUpdate(oldProps: any, newProps: any) {
+    componentDidUpdate(_oldProps: any, newProps: any) {
         this.children.chatItems = newProps.chats.map((chat: Chat, index: number) => {
-            
-            const formattedTime = chat.last_message?.time 
-                ? new Date(chat.last_message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                : "";
 
-            console.log(chat)
+            const lastMessageTime = chat.last_message?.time;
+
+            let formattedTime = "";
+            let formattedDate = "";
+
+            if (lastMessageTime) {
+                const messageDate = new Date(lastMessageTime);
+                const currentDate = new Date();
+
+                if (messageDate.toDateString() === currentDate.toDateString()) {
+                    formattedTime = messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } else {
+                    const day = messageDate.getDate();
+                    const month = messageDate.getMonth() + 1;
+                    const year = messageDate.getFullYear();
+
+                    const formattedDay = day < 10 ? `0${day}` : `${day}`;
+                    const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+
+                    formattedDate = `${formattedDay}.${formattedMonth}.${year}`;
+                }
+            }
+
+            const displayDateOrTime = formattedDate || formattedTime;
 
             return new ChatListItem({
                 ...chat,
@@ -65,14 +88,14 @@ class ChatList extends Block {
                 //you: chat.you,
                 copy: chat.last_message?.content,
                 badge: chat.unread_count,
-                time: formattedTime,
+                time: displayDateOrTime,
                 //status: chat.status,
                 //pic: chat.messageFeed[chat.messageFeed.length - 1].pic,
                 onClick: () => {
                     this.props.onChangeActiveChat(index);
                     this.setProps({ activeChatItemIndex: index });
                 }
-            })
+            });
         });
 
         return true;

@@ -25,7 +25,7 @@ export default class ChatListItem extends Block {
 
     render(): string {
         return `
-            <div class="chat-list__item-inner{{#if active}} chat-list__item-active{{/if}}">
+            <div {{#if active}}id="chat-active"{{/if}} class="chat-list__item-inner{{#if active}} chat-list__item-active{{/if}}">
                 <div class="chat-list__item-position">
                     <span class="chat-list__item-avatar">
                         {{#if avatar}}

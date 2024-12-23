@@ -29,7 +29,9 @@ export default class ChatMessage extends Block {
 
     public render(): string {
         return `
-            <div class="chat-message__date">{{date}}</div>
+            {{#if date}}
+                <div class="chat-message__date">{{date}}</div>
+            {{/if}}
             {{#if pic}}
                 <img src="{{pic}}" alt="" />
             {{else}}

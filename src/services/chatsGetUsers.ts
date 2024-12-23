@@ -1,19 +1,16 @@
 import ChatsApi from "../api/chats";
-import {
-    ChatsAddUserDTO
-} from "../api/type";
-
 
 const chatsApi = new ChatsApi();
 
-export const chatsAddUser = async (model: ChatsAddUserDTO) => {
+export const chatsGetUsers = async (model: number) => {
     window.store.set({ isLoading: true });
     try {
-        await chatsApi.chatsAddUser(model);
+        const user = await chatsApi.chatsGetUsers(model);
+        return user;
     } catch (responsError) {
         if (responsError instanceof Response) {
             const error = await responsError.json();
-            window.store.set({ chatsAddUserError: error.reason });
+            window.store.set({ chatsGetUsersError: error.reason });
         } else {
             console.error("Неизвестная ошибка:", responsError);
         }

@@ -71,3 +71,16 @@ export type ChatsAddUserDTO = {
     users: Number[],
     chatId?: number,
 }
+
+export type ChatsDeleteUserDTO = {
+    users?: Number[],
+    chatId?: number,
+}
+
+export type findUserRequest = {
+    login: string,
+}
+
+export type chatsGetUsersDTO = {
+    chatId?: number,
+}

@@ -3,29 +3,28 @@ import {
     APIError,
     UserDTO,
     PasswordDTO,
+    findUserRequest,
 } from "./type";
 
 const userApi = new HTTPTransport("/user");
 
 export default class UserApi {
-    async profile(data: UserDTO): Promise<void | APIError> {
+    async profile(data: UserDTO): Promise<UserDTO | APIError> {
         return userApi.put("/profile", { data });
     }
 
-    async profileAvatar(formData: FormData): Promise<void | APIError> {
+    async profileAvatar(formData: FormData): Promise<UserDTO | APIError> {
         return userApi.put("/profile/avatar", {
             data: formData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
+            isBinary: true
         });
     }
 
-    async password(data: PasswordDTO): Promise<void | APIError> {
+    async password(data: PasswordDTO): Promise<UserDTO | APIError> {
         return userApi.put("/password", { data });
     }
 
-    async search(): Promise<void | APIError> {
-        return userApi.post("/search");
+    async search(data: findUserRequest): Promise<UserDTO | APIError> {
+        return userApi.post("/search", { data });
     }
 }

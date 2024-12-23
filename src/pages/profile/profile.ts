@@ -7,9 +7,11 @@ import { ROUTER } from "../../utils/constants";
 import Router from "../../core/Router";
 import { withRouter } from "../../utils/withRouter";
 import { connect } from "../../utils/connect";
+import * as authServices from "../../services/auth";
 import * as logoutServices from "../../services/logout";
 import * as userServices from "../../services/user";
 import * as profileServices from "../../services/profile";
+import * as profileAvatarServices from "../../services/profileAvatar";
 import * as passwordServices from "../../services/password";
 
 const apiUrl = "https://ya-praktikum.tech/api/v2/";
@@ -98,7 +100,10 @@ interface ProfilePageProps {
         avatar:	object
     }
 }
-
+interface State {
+    isLoading: boolean;
+    user?: string;
+}
 class ProfilePage extends Block {
     constructor(props: ProfilePageProps) {
         super("div", {
@@ -501,27 +506,21 @@ class ProfilePage extends Block {
                 }),
                 onClick: (event: Event) => {
                     event.preventDefault();
-                    const host = "https://ya-praktikum.tech";
                     const myUserForm = document.getElementById("file-form");
                     
                     if (myUserForm instanceof HTMLFormElement) {
                         const form = new FormData(myUserForm);
-                        fetch(`${host}/api/v2/user/profile/avatar`, {
-                            method: "PUT",
-                            credentials: "include",
-                            mode: "cors",
-                            body: form,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            AvatarProfileDefault.setProps({
-                                avatar: `${apiUrl}resources${data.avatar}`,
-                            })
-                            return data;
-                        });
-                        this.setProps({
-                            isAvatarChangeVisible: false,
-                        });
+
+                        profileAvatarServices.profileAvatar(form)
+                            .then(data => {
+                                AvatarProfileDefault.setProps({
+                                    avatar: `${apiUrl}resources${data.avatar}`,
+                                })
+                                return data;
+                            });
+                            this.setProps({
+                                isAvatarChangeVisible: false,
+                            });
                     } else {
                         console.error("Form not found!");
                     }
@@ -543,7 +542,13 @@ class ProfilePage extends Block {
         })
     }
 
-    componentDidMount(oldProps: any): void {
+    async componentDidMount(_oldProps: any): Promise<void> {
+
+        const isLoggedIn = await authServices.checkLoginUser();
+
+        if (!isLoggedIn) {
+            return window.router.go(ROUTER.auth);
+        }
 
         userServices.fetchUser().then(() => {
             const user = this.props.user;
@@ -647,11 +652,10 @@ class ProfilePage extends Block {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: State) => {
     return {
         isLoading: state.isLoading,
-        loginError: state.loginError,
-        user: state.user
+        user: state.user,
     };
 };
 

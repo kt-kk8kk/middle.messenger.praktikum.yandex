@@ -1,5 +1,7 @@
 import Block from "../../core/block";
 import Input from "../input/input";
+import { validateField } from "../../utils/validation";
+import { messageRules } from "../../utils/rules";
 
 type SendMessageFormProps = {
     className?: string;
@@ -8,36 +10,59 @@ type SendMessageFormProps = {
     label?: string;
     error?: string;
     value?: string;
+    message?: string;
     placeholder?: string;
     onChange?: () => void;
+    onChangeActiveChat?: () => void;
     onBlur?: (e: Event) => void;
-    socket: object;
+    socket: object | null;
 };
+
+type SendButtonProps = {
+    message?: string
+    socket?: WebSocket
+    input?: Block
+}
+
+interface SendButton {
+    socket: WebSocket
+    message: string
+}
+
+interface SendMessageForm {
+    props: {
+        socket: WebSocket
+        message: string
+        name: string
+    }
+}
 
 class SendButton extends Block {
     constructor(props: SendButtonProps) {
-
         super("button", {
             ...props,
             className: "send-message__form-button",
+            attrs: {
+                type: "submit"
+            },
             message: props.message,
             socket: props.socket,
             input: props.input,
             events: {
-                click: (e: Event) => {
-                    // e.preventDefault();
+                focus: () => {
                     this.socket.send(JSON.stringify({
                         content: this.message,
-                        type: 'message',
+                        type: "message",
                     }));
                 }
             }
         });
     }
 
-    componentDidUpdate(oldProps: any, newProps: any): boolean {
+    componentDidUpdate(_oldProps: any, newProps: any): boolean {
         this.socket = newProps.socket;
-        this.message =  newProps.message;
+        this.message = newProps.message;
+        return true;
     }
 
     public render(): string {
@@ -48,34 +73,57 @@ class SendButton extends Block {
 }
 
 const SendButtonExmp = new SendButton({});
-export default class SendMessageForm extends Block {
+class SendMessageForm extends Block {
     constructor(props: SendMessageFormProps) {
 
-        super("div", {
+        super("form", {
             ...props,
             className: "send-message__form",
             message: "",
+            events: {
+                submit: (e: Event) => {
+                    e.preventDefault();
+                    
+                    this.props.socket.send(JSON.stringify({
+                        content: this.props.message,
+                        type: "message",
+                    }));
+                }
+            },
             InputExmp: new Input({
                 className: "send-message__form-input",
                 type: "text",
-                name: props.name,
+                name: props.name || '',
                 placeholder: props.placeholder,
                 value: props.message,
                 events: { 
                     change: (e: Event) => {
                         const value = (e.target as HTMLInputElement).value;
+                        const { error } = validateField(value, messageRules);
 
-                        this.setProps({
-                            message: value
-                        });
-                    }
+                        if (!error) {
+                            this.setProps({
+                                message: value
+                            });
+                        }
+                    },
+                    blur: (e: Event) => {
+                        const value = (e.target as HTMLInputElement).value;
+                        const { error } = validateField(value, messageRules);
+
+                        if (!error) {
+                            this.setProps({
+                                message: value
+                            });
+                        }
+                    },
                 }
             }),
-            SendButtonExmp
+            SendButtonExmp,
         });
     }
 
-    componentDidUpdate(oldProps: any, newProps: any): boolean {
+    componentDidUpdate(_oldProps: any, newProps: any): boolean {
         const props = newProps;
 
         SendButtonExmp.setProps({
@@ -94,3 +142,5 @@ export default class SendMessageForm extends Block {
         `;
     }
 }
+
+export default SendMessageForm;

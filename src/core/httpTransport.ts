@@ -8,7 +8,9 @@ enum METHOD {
   
 type Options = {
     method: METHOD;
+    headers?: any; 
     data?: any;
+    isBinary?: boolean;
 };
   
 type OptionsWithoutMethod = Omit<Options, "method">;
@@ -63,14 +65,22 @@ export class HTTPTransport {
         url: string,
         options: Options = { method: METHOD.GET },
     ): Promise<TResponse> {
-        const { method, data } = options;
-        const response = await fetch(url, {
+        const { method, data, isBinary} = options;
+
+        const req = {
             method,
             credentials: "include",
             mode: "cors",
             headers: { "Content-Type": "application/json" },
             body: data ? JSON.stringify(data) : null,
-        });
+        };
+
+        if (isBinary) {
+            delete req.headers;
+            req.body = data;
+        }
+
+        const response = await fetch(url, req);
   
         if (!response.ok) {
             throw response;

@@ -1,8 +1,11 @@
 import ChatsApi from "../api/chats";
+import {
+    ChatsDeleteUserDTO,
+} from "../api/type";
 
 const chatsApi = new ChatsApi();
 
-export const chatsDeleteUser = async (model) => {
+export const chatsDeleteUser = async (model: ChatsDeleteUserDTO) => {
     window.store.set({ isLoading: true });
     try {
         await chatsApi.chatsDeleteUser(model);

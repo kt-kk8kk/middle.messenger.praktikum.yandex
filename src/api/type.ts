@@ -59,6 +59,10 @@ export type ChatResponse = {
     id: number
 }
 
+export type TokenResponse = {
+    token: string
+}
+
 export type ChatsAddDTO = {
     title?: string,
 }

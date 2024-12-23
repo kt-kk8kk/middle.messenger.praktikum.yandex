@@ -8,6 +8,7 @@ import {
     ChatsAddUserDTO,
     ChatsDeleteUserDTO,
     chatsGetUsersDTO,
+    TokenResponse
 } from "./type";
 
 const chatsApi = new HTTPTransport("/");
@@ -41,5 +42,9 @@ export default class ChatsApi {
         const url = `/chats/${chatId}/users`;
         const response = await chatsApi.get<ChatResponse>(url);
         return response;
+    }
+
+    async chatsGetToken(chatID: number): Promise<TokenResponse | APIError> {
+        return chatsApi.post(`/chats/token/${chatID}`);
     }
 }

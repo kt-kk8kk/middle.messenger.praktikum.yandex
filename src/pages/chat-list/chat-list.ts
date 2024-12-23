@@ -14,6 +14,7 @@ import * as chatsDeleteServices from "../../services/chatsDelete";
 import * as chatsAddUserServices from "../../services/chatsAddUser";
 import * as searchServices from "../../services/search";
 import * as chatsGetUsersServices from "../../services/chatsGetUsers";
+import * as chatsGetTokenServices from "../../services/chatsGetToken";
 import { APIError } from "../../api/type";
 import * as chatsDeleteUserServices from "../../services/chatsDeleteUser";
 
@@ -481,18 +482,9 @@ class ChatListPage extends Block {
 
                     const chatID = this.chats[index].id;
 
-                    const token = await fetch(`https://ya-praktikum.tech/api/v2/chats/token/${chatID}`, {
-                        method: 'POST',
-                        mode: 'cors',
-                        credentials: 'include',
-                      })
-                      .then(response => response.json())
-                      .then(data => {
-                        return data.token;
-                      });
-
+                    const { token } = await chatsGetTokenServices.chatsGetToken(chatID);
                     const user = await userServices.fetchUser();
-                    const userID = user.id
+                    const userID = user.id;
 
                     const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userID}/${chatID}/${token}`);
                     // console.log(socket)

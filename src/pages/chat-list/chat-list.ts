@@ -552,7 +552,7 @@ class ChatListPage extends Block {
 
                         SendMessageFormExmp.setProps({
                             placeholder: `${chatID}`,
-                            socket: socket
+                            socket: socket,
                         });
                                             
                         this.setProps({

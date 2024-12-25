@@ -33,12 +33,7 @@ export const checkLoginUser = async () => {
         window.store.set({ user });
         return true;
     } catch (responseError) {
-        if (responseError instanceof Response) {
-            const error = await responseError.json();
-            window.store.set({ loginError: error.reason });
-        } else {
-            console.error("Неизвестная ошибка:", responseError);
-        }
+        console.error("Неизвестная ошибка:", responseError);
         return false;
     } finally {
         window.store.set({ isLoading: false });

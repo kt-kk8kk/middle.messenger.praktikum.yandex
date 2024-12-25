@@ -7,6 +7,7 @@ import { ROUTER } from "../../utils/constants";
 import Router from "../../core/Router";
 import { withRouter } from "../../utils/withRouter";
 import * as regServices from "../../services/reg";
+import * as authServices from "../../services/auth";
 interface RegPage {
     children: { 
         InputEmail: Block,
@@ -280,6 +281,17 @@ class RegPage extends Block {
             }),
         });
     }
+
+    async componentDidMount(_oldProps: any): Promise<void> {
+    
+        const isLoggedIn = await authServices.checkLoginUser();
+
+        if (isLoggedIn) {
+            return window.router.go(ROUTER.messenger);
+        }
+        
+    }
+
     public render(): string {
         return `
             <div class="box-form__wrap">

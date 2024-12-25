@@ -136,6 +136,16 @@ class AuthPage extends Block {
         });
     }
 
+    async componentDidMount(_oldProps: any): Promise<void> {
+
+        const isLoggedIn = await authServices.checkLoginUser();
+
+        if (isLoggedIn) {
+            return window.router.go(ROUTER.messenger);
+        }
+        
+    }
+
     public render(): string {
         return `
             <div class="box-form__wrap">

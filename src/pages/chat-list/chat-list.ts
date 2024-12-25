@@ -15,6 +15,7 @@ import * as chatsAddUserServices from "../../services/chatsAddUser";
 import * as searchServices from "../../services/search";
 import * as chatsGetUsersServices from "../../services/chatsGetUsers";
 import * as chatsGetTokenServices from "../../services/chatsGetToken";
+import { TokenResponse } from "../../api/type";
 import { APIError } from "../../api/type";
 import * as chatsDeleteUserServices from "../../services/chatsDeleteUser";
 
@@ -489,7 +490,18 @@ class ChatListPage extends Block {
                     const chatIndex = this.chats[index];
                     const chatID = chatIndex.id;
 
-                    const { token } = await chatsGetTokenServices.chatsGetToken(chatID);
+                    let token: string;
+                    try {
+                        const response = await chatsGetTokenServices.chatsGetToken(chatID);
+                        if ((response as TokenResponse).token) {
+                            token = (response as TokenResponse).token;
+                        } else {
+                            throw new Error("Invalid response, token not found");
+                        }
+                    } catch (error) {
+                        console.error("Failed to fetch token:", error);
+                        return;
+                    }
                     const user = await userServices.fetchUser();
                     const userID = user.id;
 

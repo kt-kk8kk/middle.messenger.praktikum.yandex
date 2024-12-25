@@ -1,37 +1,51 @@
 import { RouteInterface } from "./Router";
+import Block from "../core/block";
+interface RouteProps {
+  rootQuery: string;
+}
 
 class Route implements RouteInterface {
-  constructor(pathname, view, props) {
+  private _pathname: string;
+  private _blockClass: new (props: any) => Block;  // A constructor type for the block class
+  private _block: Block | null;
+  private _props: RouteProps;
+
+  constructor(pathname: string, view: new (props: any) => Block, props: RouteProps) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
     this._props = props;
   }
 
-  navigate(pathname: string) {
+  navigate(pathname: string): void {
     if (this.match(pathname)) {
       this._pathname = pathname;
       this.render();
     }
   }
 
-  leave() {
+  leave(): void {
     if (this._block) {
       // this._block.hide();
     }
   }
 
-  match(pathname) {
+  match(pathname: string): boolean {
     return pathname === this._pathname;
   }
 
-  _renderDom(query, block) {
+  private _renderDom(query: string, block: Block): void {
     const root = document.querySelector(query);
-    root.innerHTML = "";
-    root.append(block.getContent());
+    if (root) {
+      const content = block.getContent();
+      if (content) {
+        root.innerHTML = "";
+        root.append(content);
+      }
+    }
   }
 
-  render() {
+  render(): void {
     if (!this._block) {
       this._block = new this._blockClass({});
     }

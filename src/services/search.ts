@@ -19,6 +19,7 @@ export const search = async (model: findUserRequest) => {
         } else {
             console.error("Неизвестная ошибка:", responsError);
         }
+        return undefined;
     } finally {
         window.store.set({ isLoading: false });
     }

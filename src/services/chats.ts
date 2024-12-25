@@ -19,6 +19,7 @@ export const chats = async (model: Model) => {
         } else {
             console.error("Неизвестная ошибка:", responsError);
         }
+        throw new Error('Failed to fetch chats');
     } finally {
         window.store.set({ isLoading: false });
     }

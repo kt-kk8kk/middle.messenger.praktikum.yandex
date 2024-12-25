@@ -1,8 +1,12 @@
 import UserApi from "../api/user";
 
 const userApi = new UserApi();
+interface Model {
+    oldPassword: string,
+    newPassword: string,
+}
 
-export const password = async (model) => {
+export const password = async (model: Model) => {
     window.store.set({ isLoading: true });
     try {
         await userApi.password(model);

@@ -8,7 +8,7 @@ enum METHOD {
   
 type Options = {
     method: METHOD;
-    headers?: any; 
+    headers?: Record<string, string>;
     data?: any;
     isBinary?: boolean;
 };
@@ -65,9 +65,9 @@ export class HTTPTransport {
         url: string,
         options: Options = { method: METHOD.GET },
     ): Promise<TResponse> {
-        const { method, data, isBinary} = options;
+        const { method, data, isBinary } = options;
 
-        const req = {
+        const req: RequestInit = {
             method,
             credentials: "include",
             mode: "cors",
@@ -94,4 +94,4 @@ export class HTTPTransport {
         return resultData as unknown as TResponse;
     }
 }
-
+  

@@ -1,13 +1,18 @@
 import EventBus from "./eventBus";
+interface StoreState {
+    [key: string]: any;
+}
 
 export enum StoreEvents {
     Updated = "Updated",
 }
 
-export class Store extends EventBus {
-    private state = {};
+export class Store extends EventBus<StoreEvents> {
+    private state!: StoreState;
 
-    constructor(defaultState) {
+    private static __instance: Store | null = null;
+
+    constructor(defaultState: StoreState) {
         if (Store.__instance) {
             return Store.__instance;
         }
@@ -19,11 +24,11 @@ export class Store extends EventBus {
         Store.__instance = this;
     }
 
-    public getState() {
+    public getState(): StoreState {
         return this.state;
     }
 
-    public set(nextState) {
+    public set(nextState: StoreState): void {
         const prevState = { ...this.state };
 
         this.state = { ...this.state, ...nextState };

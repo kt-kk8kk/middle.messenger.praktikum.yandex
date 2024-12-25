@@ -217,7 +217,7 @@ class ChatListPage extends Block {
                                     alert("Пользователь " + loginValue + " успешно добавлен в чат " + this.props.chatTitle + "!");
                                 })
                                 .catch((error) => {
-                                    console.error('Ошибка при добавлении пользователя:', error);
+                                    console.error("Ошибка при добавлении пользователя:", error);
                                 });
                         })
                         .catch((error) => {
@@ -300,7 +300,7 @@ class ChatListPage extends Block {
                                     alert("Пользователь " + loginValue + " успешно удален из чат " + this.props.chatTitle + ".");
                                 })
                                 .catch((error) => {
-                                    console.error('Ошибка при удалении пользователя:', error);
+                                    console.error("Ошибка при удалении пользователя:", error);
                                 });
                         })
                         .catch((error) => {
@@ -370,7 +370,7 @@ class ChatListPage extends Block {
                                 });
                             })
                             .catch((error) => {
-                                console.error('Ошибка при добавлении чата:', error);
+                                console.error("Ошибка при добавлении чата:", error);
                             });
                     }
                 },
@@ -416,7 +416,7 @@ class ChatListPage extends Block {
                             });
                         })
                         .catch((error) => {
-                            console.error('Ошибка при добавлении чата:', error);
+                            console.error("Ошибка при добавлении чата:", error);
                         });
                 },
             }),
@@ -443,7 +443,7 @@ class ChatListPage extends Block {
     }
 
     scrollToBottom() {
-        const chatMessagesContainer = document.querySelector('.chat__body');
+        const chatMessagesContainer = document.querySelector(".chat__body");
         if (chatMessagesContainer) {
             setTimeout(() => {
                 chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
@@ -465,61 +465,63 @@ class ChatListPage extends Block {
                 limit: INFINITY_LIMIT
             });
 
-            Array.isArray(chats) && chats.sort((a: Chat, b: Chat) => {
-
+            if (!Array.isArray(chats)) {
+                throw new Error("Failed to fetch chats, received non-array data");
+            }
+    
+            chats.sort((a: Chat, b: Chat) => {
                 if (a.last_message && b.last_message) {
                     return new Date(b.last_message.time).getTime() - new Date(a.last_message.time).getTime();
                 } else {
                     return 0;
                 }
-            })
+            });
 
             this.chats = chats;
 
             ChatListDefault.setProps({
                 chats,
                 onChangeActiveChat: async (index: number) => {
-
-                    const chatID = this.chats[index].id;
+                    if (!Array.isArray(this.chats)) {
+                        console.error("Chats are not available.");
+                        return;
+                    }
+                    const chatIndex = this.chats[index];
+                    const chatID = chatIndex.id;
 
                     const { token } = await chatsGetTokenServices.chatsGetToken(chatID);
                     const user = await userServices.fetchUser();
                     const userID = user.id;
 
                     const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userID}/${chatID}/${token}`);
-                    // console.log(socket)
 
-                    socket.addEventListener('open', () => {
-                        // console.log('Соединение установлено');
-
+                    socket.addEventListener("open", () => {
                         window.setInterval(()=>{
                             socket.send(JSON.stringify({
-                                type: 'ping'
+                                type: "ping"
                             }));                            
                         }, 3000)
 
                         socket.send(JSON.stringify({
-                            content: '0',
-                            type: 'get old',
+                            content: "0",
+                            type: "get old",
                         }));
                     });
 
-                    socket.addEventListener('close', event => {
+                    socket.addEventListener("close", event => {
                         if (event.wasClean) {
-                            console.log('Соединение закрыто чисто');
+                            console.log("Соединение закрыто чисто");
                         } else {
-                            console.log('Обрыв соединения');
+                            console.log("Обрыв соединения");
                         }
 
                         console.log(`Код: ${event.code} | Причина: ${event.reason}`);
                     });
 
-                    socket.addEventListener('message', event => {
-                        // console.log('Получены данные', event.data);
-
+                    socket.addEventListener("message", event => {
                         const data = JSON.parse(event.data);
 
-                        if (data.type === 'pong') {
+                        if (data.type === "pong") {
                             return;
                         }
 
@@ -531,8 +533,8 @@ class ChatListPage extends Block {
                             });
                         } else {
                             socket.send(JSON.stringify({
-                                content: '0',
-                                type: 'get old',
+                                content: "0",
+                                type: "get old",
                             }));
                         }
 
@@ -543,23 +545,23 @@ class ChatListPage extends Block {
                                             
                         this.setProps({
                             activeChatItemIndex: index,
-                            activeChat: this.chats[index],
+                            activeChat: chatIndex,
                             chatID: chatID,
-                            chatTitle: this.chats[index].title,   
+                            chatTitle: chatIndex.title,   
                         });
 
                         this.scrollToBottom();
 
                     });
 
-                    socket.addEventListener('error', event => {
-                        console.log('Ошибка', event);
+                    socket.addEventListener("error", event => {
+                        console.log("Ошибка", event);
                     });
 
                 }
             });
         } catch (error) {
-            console.error('Ошибка при загрузке чатов:', error);
+            console.error("Ошибка при загрузке чатов:", error);
         }
     }
 

@@ -2,8 +2,16 @@ import { ROUTER } from "../utils/constants";
 import AuthApi from "../api/auth";
 
 const authApi = new AuthApi();
+interface Model {
+    first_name: string;
+    second_name: string;
+    login: string;
+    email: string;
+    password: string;
+    phone: string;
+}
 
-export const reg = async (model) => {
+export const reg = async (model: Model) => {
     window.store.set({ isLoading: true });
     try {
         await authApi.signup(model);

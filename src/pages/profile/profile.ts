@@ -461,7 +461,7 @@ class ProfilePage extends Block {
                 logout: true,
                 label: "Выйти",
                 onClick: () => {
-                    logoutServices.logout({});
+                    logoutServices.logout();
                 },
                 
             }),
@@ -512,11 +512,18 @@ class ProfilePage extends Block {
                         const form = new FormData(myUserForm);
 
                         profileAvatarServices.profileAvatar(form)
-                            .then(data => {
-                                AvatarProfileDefault.setProps({
-                                    avatar: `${apiUrl}resources${data.avatar}`,
-                                })
+                            .then((data) => {
+                                if (data && data.avatar) {
+                                    AvatarProfileDefault.setProps({
+                                        avatar: `${apiUrl}resources${data.avatar}`,
+                                    })
+                                } else {
+                                    console.error("Avatar not found in the response.");
+                                }
                                 return data;
+                            })
+                            .catch((error) => {
+                                console.error("Error uploading avatar:", error);
                             });
                             this.setProps({
                                 isAvatarChangeVisible: false,

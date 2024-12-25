@@ -1,4 +1,5 @@
 import { StoreEvents } from "../core/Store";
+import Block from "../core/block";
 import isEqual from "./isEqual";
 
 interface State {
@@ -11,10 +12,10 @@ type MapStateToProps = (state: State) => Record<string, any>;
 type ComponentConstructor<Props = {}> = new (props: Props) => Block<Props>;
 
 export function connect(mapStateToProps: MapStateToProps) {
-    return function (Component: ComponentConstructor) {
+    return function <Props>(Component: ComponentConstructor<Props>) {
         return class extends Component {
             private onChangeStoreCallback: () => void;
-            constructor(props: any) {
+            constructor(props: Props) {
                 const store = window.store;
                 // сохраняем начальное состояние
                 let state = mapStateToProps(store.getState());

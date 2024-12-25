@@ -1,8 +1,11 @@
 import ChatsApi from "../api/chats";
+interface Model {
+    chatId: number;
+}
 
 const chatsApi = new ChatsApi();
 
-export const chatsGetUsers = async (model: number) => {
+export const chatsGetUsers = async (model: Model): Promise<any | void> => {
     window.store.set({ isLoading: true });
     try {
         const user = await chatsApi.chatsGetUsers(model);

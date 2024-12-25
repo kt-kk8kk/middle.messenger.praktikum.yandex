@@ -1,15 +1,20 @@
 import Route from "./Route";
+import Block from "../core/block";
 
 export interface RouteInterface {
-  render: () => void;
-  match: (path: string) => boolean;
+  render: (pathname: string) => void;
+  match: (pathname: string) => boolean;
   leave: () => void;
 }
 
 class Router {
+    private static __instance: Router | null = null;
     public routes: RouteInterface[] = [];
+    private history!: History;
+    private _currentRoute: RouteInterface | null = null;
+    private _rootQuery: string = "";
 
-    constructor(rootQuery) {
+    constructor(rootQuery: string) {
         if (Router.__instance) {
             return Router.__instance;
         }
@@ -22,20 +27,20 @@ class Router {
         Router.__instance = this;
     }
 
-    use(pathname, block) {
+    use(pathname: string, block: { new (props: any): Block }): this {
         const route = new Route(pathname, block, {rootQuery: this._rootQuery});
         this.routes.push(route);
         return this;
     }
 
-    start() {
-        window.onpopstate = (event => {
-            this._onRoute(event.currentTarget.location.pathname);
-        }).bind(this);
+    start(): void {
+        window.onpopstate = (event) => {
+          this._onRoute((event.currentTarget as Window).location.pathname);
+        };
         this._onRoute(window.location.pathname);
     }
 
-    _onRoute(pathname) {
+    private _onRoute(pathname: string): void {
         const route = this.getRoute(pathname);
 
         if (!route) {
@@ -47,23 +52,23 @@ class Router {
         }
 
         this._currentRoute = route;
-        route.render(route, pathname);
+        route.render(pathname);
     }
 
-    go(pathname) {
+    go(pathname: string): void {
       this.history.pushState({}, '', pathname);
       this._onRoute(pathname);
     }
 
-    back() {
+    back(): void {
       this.history.back();
     }
 
-    forward() {
+    forward(): void {
       this.history.forward();
     }
 
-    getRoute(pathname) {
+    private getRoute(pathname: string): RouteInterface | undefined {
       const route = this.routes.find(route => route.match(pathname));
       if(!route) {
         return this.routes.find(route => route.match('*'))

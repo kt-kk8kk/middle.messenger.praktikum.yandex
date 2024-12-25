@@ -35,9 +35,17 @@ interface RegPageProps {
     errors: {
         login: ''
         password: ''
+        email: ''
+        first_name: ''
+        second_name: ''
+        phone: ''
+        confirm_password: ''
     }
 }
-
+interface State {
+    isLoading: boolean;
+    loginError: string | null;
+}
 class RegPage extends Block {
     constructor(props: RegPageProps) {
         super("main", {
@@ -304,7 +312,7 @@ class RegPage extends Block {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: State) => {
     return {
         isLoading: state.isLoading,
         loginError: state.loginError,

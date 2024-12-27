@@ -85,12 +85,9 @@ class ChatList extends Block {
                 ...chat,
                 avatar: chat.avatar,
                 name: chat.title,
-                //you: chat.you,
                 copy: chat.last_message?.content,
                 badge: chat.unread_count,
                 time: displayDateOrTime,
-                //status: chat.status,
-                //pic: chat.messageFeed[chat.messageFeed.length - 1].pic,
                 onClick: () => {
                     this.props.onChangeActiveChat(index);
                     this.setProps({ activeChatItemIndex: index });

@@ -1,8 +1,12 @@
-import { Input, Button } from "../../components";
+import { connect } from "../../utils/connect";
+import { Input, Button, Spinner } from "../../components";
 import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
 import { loginRules, passwordRules } from "../../utils/rules";
-
+import { ROUTER } from "../../utils/constants";
+import Router from "../../core/Router";
+import { withRouter } from "../../utils/withRouter";
+import * as authServices from "../../services/auth";
 interface AuthPage {
     children: { 
         InputEmail: Block,
@@ -16,21 +20,28 @@ interface AuthPage {
     }
     props: AuthPageProps
 }
-
 interface AuthPageProps {
+    router: Router,
     formState: {
         login: string
         password: string
     },
     errors: {
-        login: ''
-        password: ''
-    }
+        login: ""
+        password: ""
+    },
+    isLoading: boolean;
+    loginError: string | null;
+}
+interface State {
+    isLoading: boolean;
+    loginError: string | null;
 }
 class AuthPage extends Block {
     constructor(props: AuthPageProps) {
         super("main", {
             ...props,
+            className: "box-form__main",
             formState: {
                 login: "",
                 password: "",
@@ -39,7 +50,6 @@ class AuthPage extends Block {
                 login: "",
                 password: "",
             },
-            className: "box-form__main",
             InputLogin: new Input({
                 type: "text",
                 name: "login",
@@ -103,10 +113,12 @@ class AuthPage extends Block {
                     });
 
                     if (!loginValidation.error && !passwordValidation.error) {
-                        console.log({
+                        const data = {
                             login: loginValue,
                             password: passwordValue,
-                        });
+                        };
+                
+                        authServices.login(data);
                     }
                 },
             }),
@@ -115,10 +127,23 @@ class AuthPage extends Block {
                 type: "button",
                 className: "link",
                 onClick: () => {
-                    console.log("Redirecting to sign-up page...");
+                    props.router.go(ROUTER.signUp);
                 },
             }),
+            Spinner: new Spinner({
+                className: "box-form__spinner",
+            }),
         });
+    }
+
+    async componentDidMount(_oldProps: any): Promise<void> {
+
+        const isLoggedIn = await authServices.checkLoginUser();
+
+        if (isLoggedIn) {
+            return window.router.go(ROUTER.messenger);
+        }
+        
     }
 
     public render(): string {
@@ -127,12 +152,19 @@ class AuthPage extends Block {
                 <div class="box-form">
                     <h2 class="box-form__head">Вход</h2>
                     <form class="box-form__auth-form">
+                        {{#if isLoading}}
+                            {{{ Spinner }}}
+                        {{/if}}
+                    
                         {{{ InputLogin }}}
                         {{{ InputPassword }}}
                         <div class="box-form__button-fieldset">
                             {{{ SignInButton }}}
                             {{{ SignUpButton }}}
                         </div>
+                        {{#if loginError}}
+                            <div class="box-form__error bigger center">{{loginError}}</div>
+                        {{/if}}
                     </form>
                 </div>
             </div>
@@ -140,4 +172,11 @@ class AuthPage extends Block {
     }
 }
 
-export default AuthPage;
+const mapStateToProps = (state: State) => {
+    return {
+        isLoading: state.isLoading,
+        loginError: state.loginError,
+    };
+};
+
+export default withRouter(connect(mapStateToProps)(AuthPage));

@@ -1,6 +1,7 @@
 import Block from "../../core/block";
 
 interface ModalFunctionalProps {
+    className?: string,
     onClick?: () => void;
     modalFunctionalBody: Block[];
 }

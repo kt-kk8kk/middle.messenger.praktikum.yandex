@@ -1,10 +1,10 @@
-import Block from "../../core/block"; 
+import Block from "../../core/block";
 
 type ButtonProps = {
     label: string;
     type: string;
     className: string;
-    onClick?: (event: Event) => void;
+    onClick?: (e: Event) => void;
 }
 
 export default class Button extends Block {

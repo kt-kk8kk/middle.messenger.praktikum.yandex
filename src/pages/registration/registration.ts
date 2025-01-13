@@ -1,8 +1,13 @@
-import { Input, Button } from "../../components";
+import { connect } from "../../utils/connect";
+import { Input, Button, Spinner } from "../../components";
 import Block from "../../core/block";
 import { validateField } from "../../utils/validation";
 import { emailRules, loginRules, firstNameRules, secondNameRules, phoneRules, passwordRules } from "../../utils/rules";
-
+import { ROUTER } from "../../utils/constants";
+import Router from "../../core/Router";
+import { withRouter } from "../../utils/withRouter";
+import * as regServices from "../../services/reg";
+import * as authServices from "../../services/auth";
 interface RegPage {
     children: { 
         InputEmail: Block,
@@ -18,6 +23,7 @@ interface RegPage {
 }
 
 interface RegPageProps {
+    router: Router,
     formState: {
         login: string
         password: string
@@ -30,9 +36,17 @@ interface RegPageProps {
     errors: {
         login: ''
         password: ''
+        email: ''
+        first_name: ''
+        second_name: ''
+        phone: ''
+        confirm_password: ''
     }
 }
-
+interface State {
+    isLoading: boolean;
+    loginError: string | null;
+}
 class RegPage extends Block {
     constructor(props: RegPageProps) {
         super("main", {
@@ -240,31 +254,54 @@ class RegPage extends Block {
                     };
 
                     if (!Object.values(errors).some((error) => error)) {
-                        console.log({
+                        const data = {
                             email: formState.email,
                             login: formState.login,
                             first_name: formState.first_name,
                             second_name: formState.second_name,
                             phone: formState.phone,
                             password: formState.password,
-                        });
-                    }
+                            confirm_password: formState.confirm_password,
+                        };
+                
+                        regServices.reg(data);
+                    };
                 },
             }),
             SignInButton: new Button({
                 label: "Войти",
                 type: "button",
                 className: "link",
-                onClick: () => console.log(this.props.formState),
+                onClick: () => {
+                    props.router.go(ROUTER.auth);
+                },
+            }),
+            Spinner: new Spinner({
+                className: "box-form__spinner",
             }),
         });
     }
+
+    async componentDidMount(_oldProps: any): Promise<void> {
+    
+        const isLoggedIn = await authServices.checkLoginUser();
+
+        if (isLoggedIn) {
+            return window.router.go(ROUTER.messenger);
+        }
+        
+    }
+
     public render(): string {
         return `
             <div class="box-form__wrap">
                 <div class="box-form">
                     <h2 class="box-form__head">Регистрация</h2>
                     <form class="box-form__reg-form">
+                        {{#if isLoading}}
+                            {{{ Spinner }}}
+                        {{/if}}
+
                         {{{ InputEmail }}}
                         {{{ InputLogin }}}
                         {{{ InputFirstName }}}
@@ -276,6 +313,10 @@ class RegPage extends Block {
                             {{{ SignUpButton }}}
                             {{{ SignInButton }}}
                         </div>
+                        
+                        {{#if regError}}
+                            <div class="box-form__error bigger center">{{regError}}</div>
+                        {{/if}}
                     </form>
                 </div>
             </div>
@@ -283,4 +324,11 @@ class RegPage extends Block {
     }
 }
 
-export default RegPage;
+const mapStateToProps = (state: State) => {
+    return {
+        isLoading: state.isLoading,
+        loginError: state.loginError,
+    };
+};
+
+export default withRouter(connect(mapStateToProps)(RegPage));

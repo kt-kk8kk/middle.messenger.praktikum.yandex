@@ -3,7 +3,7 @@ import Block from "../../core/block";
 
 interface ChatList {
     children: { 
-        chats: Chat[]
+        chatItems: Chat[]
     }
     props: ChatListProps
 }
@@ -17,24 +17,31 @@ interface Chat extends Block {
     messageFeed: ChatListItemProps[]
     time: string
     badge: string
+    title: string
+    unread_count: number
+    last_message: {
+        time: string
+        content: string
+    }
     props: {
         active: boolean
     }
 }
 interface ChatListProps {
-    chats: Chat[];
+    chats?: Chat[];
     activeChatItemIndex?: number;
     onChangeActiveChat: (index: number) => void;
 }
 
 type ChatListItemProps = {
-    avatar: string;
-    name: string;
-    copy: string;
-    time: string;
-    you: string;
-    pic: string;
-    status: string;
+    avatar?: string;
+    name?: string;
+    copy?: string;
+    time?: string;
+    you?: string;
+    pic?: string;
+    status?: string;
+    badge?: number;
     onClick?: (e: Event) => void;
 }
 
@@ -42,31 +49,60 @@ class ChatList extends Block {
     constructor(props: ChatListProps) {
         super("ul", {
             ...props,
-            className: `chat-list`,
-            chats: props.chats.map((chat: Chat, index: number) => 
-                new ChatListItem({
-                    ...chat,
-                    avatar: chat.avatar,
-                    name: chat.name,
-                    you: chat.you,
-                    copy: chat.messageFeed[chat.messageFeed.length - 1].copy,
-                    time: chat.messageFeed[chat.messageFeed.length - 1].time,
-                    status: chat.status,
-                    pic: chat.messageFeed[chat.messageFeed.length - 1].pic,
-                    onClick: () => {
-                        props.onChangeActiveChat(index);
-                        this.setProps({ activeChatItemIndex: index });
-                    }
-                })
-            ),
+            className: `chat-list`
         });
+    }
+
+    componentDidUpdate(_oldProps: any, newProps: any) {
+        this.children.chatItems = newProps.chats.map((chat: Chat, index: number) => {
+
+            const lastMessageTime = chat.last_message?.time;
+
+            let formattedTime = "";
+            let formattedDate = "";
+
+            if (lastMessageTime) {
+                const messageDate = new Date(lastMessageTime);
+                const currentDate = new Date();
+
+                if (messageDate.toDateString() === currentDate.toDateString()) {
+                    formattedTime = messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } else {
+                    const day = messageDate.getDate();
+                    const month = messageDate.getMonth() + 1;
+                    const year = messageDate.getFullYear();
+
+                    const formattedDay = day < 10 ? `0${day}` : `${day}`;
+                    const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+
+                    formattedDate = `${formattedDay}.${formattedMonth}.${year}`;
+                }
+            }
+
+            const displayDateOrTime = formattedDate || formattedTime;
+
+            return new ChatListItem({
+                ...chat,
+                avatar: chat.avatar,
+                name: chat.title,
+                copy: chat.last_message?.content,
+                badge: chat.unread_count,
+                time: displayDateOrTime,
+                onClick: () => {
+                    this.props.onChangeActiveChat(index);
+                    this.setProps({ activeChatItemIndex: index });
+                }
+            });
+        });
+
+        return true;
     }
 
     render(): string {
         const { activeChatItemIndex } = this.props;
-        const { chats } = this.children;
+        const { chatItems } = this.children;
 
-        chats.forEach((chat: Chat, index: number) => {
+        chatItems?.forEach((chat: Chat, index: number) => {
             if (index === activeChatItemIndex) {
                 chat.setProps({ active: true });
                 return;
@@ -77,8 +113,9 @@ class ChatList extends Block {
             }
         });
 
+
         return `
-            {{#each chats}}
+            {{#each chatItems}}
                 {{{ this }}}
             {{/each}}
         `;

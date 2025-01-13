@@ -4,6 +4,7 @@ type ChooseFileProps = {
     file: string;
     className?: string;
     onClick?: (event: Event) => void;
+    onChange?: (event: Event) => void;
 }
 
 export default class ChooseFile extends Block {
@@ -13,14 +14,16 @@ export default class ChooseFile extends Block {
             className: `choose-file__wrap`,
             file: props.file,
             events: {
-                click: props.onClick,
+                click: props.onChange,
             },
         });
     }
 
     public render(): string {
         return `
-            <a class="choose-file__link" href="">{{file}}</a>
+            <input type="file" id="choose-file__upload" name="avatar" accept="image/*" hidden />
+            <label for="choose-file__upload" class="choose-file__link">{{file}}</label>
+            <span class="choose-file__chosen"></span>
         `;
     }
 }

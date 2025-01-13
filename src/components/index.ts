@@ -1,10 +1,14 @@
 export { Input } from './input'
 export { Button } from './button';
 export { Error } from './error';
+export { Spinner } from './spinner';
 export { SearchForm } from './search-form';
 export { ChatList } from './chat-list';
 export { ChatListItem } from './chat-list-item';
 export { ChatHeaderDots } from './chat-header-dots';
+export { ChatHeaderAdd } from './chat-header-add';
+export { ChatHeaderDelete } from './chat-header-delete';
+export { ChatHeaderProfile } from './chat-header-profile';
 export { SendMessageForm } from './send-message-form';
 export { ChatMessagesFeed } from './chat-messages-feed';
 export { ChatMessage } from './chat-message';
@@ -12,8 +16,10 @@ export { ChatMessageDate } from './chat-message-date';
 export { ModalFunctional } from './modal-functional';
 export { ModalFunctionalItem } from './modal-functional-item';
 export { ModalFullWidth } from './modal-full-width';
+export { ModalFullWidthCloser } from './modal-full-width-closer';
 export { ErrorWindow } from './error-window';
 export { ProfileBack } from './profile-back';
 export { AvatarProfile } from './avatar-profile';
+export { AvatarProfileUpdate } from './avatar-profile-update';
 export { InputProfile } from './input-profile';
 export { ChooseFile } from './choose-file';

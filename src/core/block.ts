@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import Handlebars from "handlebars";
 
 // Нельзя создавать экземпляр данного класса
-export default class Block {
+export default class Block<Props = {}> {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
@@ -98,7 +98,7 @@ export default class Block {
         this.componentDidMount();
     }
 
-    componentDidMount(oldProps) {}
+    componentDidMount(oldProps: any = {}): void {}
 
     dispatchComponentDidMount() {
         this._eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -109,12 +109,15 @@ export default class Block {
         if (!response) {
             return;
         }
+
         this._render();
     }
 
     componentDidUpdate(oldProps, newProps) {
         return true;
     }
+
+    componentWillUnmount() {}
 
     setProps = (nextProps) => {
         if (!nextProps) {

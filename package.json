@@ -11,15 +11,26 @@
         "check-types": "tsc --noEmit",
         "check-styles": "stylelint '**/*.styl'",
         "check-scripts": "eslint '**/*.ts'",
-        "lint": "npm run check-types && npm run check-styles && npm run check-scripts"
+        "lint": "npm run check-types && npm run check-styles && npm run check-scripts",
+        "test": "mocha"
     },
     "devDependencies": {
         "@eslint/js": "^9.16.0",
+        "@types/chai": "^5.0.1",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^22.10.6",
+        "@types/sinon": "^17.0.3",
+        "chai": "^5.1.2",
         "eslint": "^8.57.1",
         "eslint-config-airbnb": "^19.0.4",
         "globals": "^15.12.0",
+        "husky": "^9.1.7",
+        "jsdom": "^26.0.0",
+        "mocha": "^11.0.1",
+        "sinon": "^19.0.2",
         "stylelint": "^16.11.0",
         "stylus": "^0.64.0",
+        "ts-node": "^10.9.2",
         "typescript": "^5.6.3",
         "typescript-eslint": "^8.16.0",
         "vite": "^5.4.10"
@@ -27,5 +38,11 @@
     "dependencies": {
         "handlebars": "^4.7.8",
         "stylelint-stylus": "^1.0.0"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm-run-all test lint:all",
+            "pre-push": "npm run other command",
+        }
     }
 }

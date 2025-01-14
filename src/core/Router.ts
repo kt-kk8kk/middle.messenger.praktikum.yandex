@@ -56,6 +56,9 @@ class Router {
     }
 
     go(pathname: string): void {
+      if (typeof pathname !== 'string') {
+        throw new Error(`Expected pathname to be a string, but got ${typeof pathname}`);
+      }
       this.history.pushState({}, '', pathname);
       this._onRoute(pathname);
     }

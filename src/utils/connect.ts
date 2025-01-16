@@ -7,9 +7,9 @@ interface State {
     loginError: string | null;
 }
 
-type MapStateToProps = (state: State) => Record<string, any>;
+type MapStateToProps = (state: State) => Record<string, unknown>;
 
-type ComponentConstructor<Props = {}> = new (props: Props) => Block<Props>;
+type ComponentConstructor<Props = object> = new (props: Props) => Block<Props>;
 
 export function connect(mapStateToProps: MapStateToProps) {
     return function <Props>(Component: ComponentConstructor<Props>) {

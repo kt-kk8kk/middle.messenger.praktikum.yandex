@@ -13,8 +13,6 @@
     "check-scripts": "eslint '**/*.ts'",
     "lint": "npm run check-types && npm run check-styles && npm run check-scripts",
     "test": "mocha",
-    "validate": "npm-run-all --parallel test lint",
-    "precommit": "npm run validate",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -45,7 +43,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"[Husky] pre-commit\""
+      "pre-commit": "npm-run-all test lint"
     }
   }
 }

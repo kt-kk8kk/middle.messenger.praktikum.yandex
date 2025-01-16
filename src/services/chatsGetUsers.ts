@@ -5,18 +5,19 @@ interface Model {
 
 const chatsApi = new ChatsApi();
 
-export const chatsGetUsers = async (model: Model): Promise<any | void> => {
+export const chatsGetUsers = async (model: Model): Promise<unknown | void> => {
     window.store.set({ isLoading: true });
     try {
         const user = await chatsApi.chatsGetUsers(model);
         return user;
-    } catch (responsError) {
+    } catch (responsError: unknown) {
         if (responsError instanceof Response) {
             const error = await responsError.json();
             window.store.set({ chatsGetUsersError: error.reason });
         } else {
             console.error("Неизвестная ошибка:", responsError);
         }
+        return undefined;
     } finally {
         window.store.set({ isLoading: false });
     }

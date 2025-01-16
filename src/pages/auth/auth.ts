@@ -136,7 +136,7 @@ class AuthPage extends Block {
         });
     }
 
-    async componentDidMount(_oldProps: any): Promise<void> {
+    async componentDidMount(): Promise<void> {
 
         const isLoggedIn = await authServices.checkLoginUser();
 

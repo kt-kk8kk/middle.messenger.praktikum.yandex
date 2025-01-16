@@ -209,7 +209,7 @@ class ChatListPage extends Block {
 
                             chatsAddUserServices.chatsAddUser(data)
                                 .then(() => {
-                                    this.componentDidMount({});
+                                    this.componentDidMount();
                                     this.setProps({
                                         isModalFunctionVisible: false,
                                         isModalFullVisible: false,
@@ -292,7 +292,7 @@ class ChatListPage extends Block {
 
                             chatsDeleteUserServices.chatsDeleteUser(dataUser)
                                 .then(() => {
-                                    this.componentDidMount({});
+                                    this.componentDidMount();
                                     this.setProps({
                                         isModalFunctionVisible: false,
                                         isModalFullVisible: false,
@@ -364,7 +364,7 @@ class ChatListPage extends Block {
 
                         chatsAddServices.chatsAdd(data)
                             .then(() => {
-                                this.componentDidMount({});
+                                this.componentDidMount();
                                 this.setProps({
                                     isModalFullVisible: false,
                                     addChatModal: false,
@@ -410,7 +410,7 @@ class ChatListPage extends Block {
                     };
                     chatsDeleteServices.chatsDelete(data)
                         .then(() => {
-                            this.componentDidMount({});
+                            this.componentDidMount();
                             this.setProps({
                                 isModalFullVisible: false,
                                 deleteChatModal: false,
@@ -452,7 +452,7 @@ class ChatListPage extends Block {
         }
     }
 
-    async componentDidMount(_oldProps: any): Promise<void> {
+    async componentDidMount(): Promise<void> {
 
         const isLoggedIn = await authServices.checkLoginUser();
 

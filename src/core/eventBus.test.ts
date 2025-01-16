@@ -56,6 +56,6 @@ describe("EventBus", () => {
     it("Должна выводиться ошибка, если такого события не существует", () => {
         const handler = sinon.stub();
         
-        expect(() => eventBus.off(EVENT_1, handler)).to.throw(`Нет событи: ${EVENT_1}`);
+        expect(() => eventBus.off(EVENT_1, handler)).to.throw(`Нет события: ${EVENT_1}`);
     });
 });

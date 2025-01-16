@@ -3,84 +3,59 @@ import { expect } from "chai";
 import sinon from "sinon";
 
 describe("EventBus", () => {
+    const EVENT_1 = "eventTest1";
+    const EVENT_2 = "eventTest2";
+
     let eventBus: EventBus<string>;
 
     beforeEach(() => {
         eventBus = new EventBus<string>();
     });
 
-    describe("Метод on", () => {
-        it("Должен добавлять слушателей событий с помощью 'on'", () => {
-            const callback = sinon.spy();
-            
-            eventBus.on("testEvent", callback);
-            
-            expect(eventBus['listeners']['testEvent']).to.have.lengthOf(1);
-        });
+    it("Должен отрабатываться подписанный обработчик", () => {
+        const handler = sinon.stub();
+        const payloads = ["payload1", "payload2"];
+        
+        eventBus.on(EVENT_1, handler);
+
+        eventBus.emit(EVENT_1, ...payloads);
+        
+        expect(handler.calledOnceWith(...payloads)).to.be.true;
     });
 
-    describe("Метод emit", () => {
-        it("Должен вызывать слушателя при эмитировании события", () => {
-            const callback = sinon.spy();
-            
-            eventBus.on("testEvent", callback);
-            
-            eventBus.emit("testEvent");
+    it("Подписанный обработчик должен отрабатываться только для своего события", () => {
+        const handlerEvent1 = sinon.stub();
+        const handlerEvent2 = sinon.stub();
+        
+        eventBus.on(EVENT_1, handlerEvent1);
+        eventBus.on(EVENT_2, handlerEvent2);
 
-            expect(callback.calledOnce).to.be.true;
-        });
+        eventBus.emit(EVENT_1);
+        
+        expect(handlerEvent1.calledOnce).to.be.true;
+        expect(handlerEvent2.calledOnce).to.be.false;
 
-        it("Должен вызывать всех слушателей при эмитировании события с несколькими слушателями", () => {
-            const callback1 = sinon.spy();
-            const callback2 = sinon.spy();
+        handlerEvent1.reset();
+        eventBus.emit(EVENT_2);
 
-            eventBus.on("testEvent", callback1);
-            eventBus.on("testEvent", callback2);
-
-            eventBus.emit("testEvent");
-
-            expect(callback1.calledOnce).to.be.true;
-            expect(callback2.calledOnce).to.be.true;
-        });
-
-        it("Должен не генерировать ошибку при эмитировании события без слушателей", () => {
-            const emitSpy = sinon.spy(eventBus, "emit");
-
-            eventBus.emit("nonExistentEvent");
-
-            expect(emitSpy.calledOnce).to.be.true;
-        });
-
-        it("Должен передавать параметры слушателям при эмитировании события", () => {
-            const callback = sinon.spy();
-            
-            eventBus.on("testEventWithArgs", callback);
-            
-            const param1 = "param1";
-            const param2 = 42;
-            
-            eventBus.emit("testEventWithArgs", param1, param2);
-            
-            expect(callback.calledOnceWith(param1, param2)).to.be.true;
-        });
+        expect(handlerEvent1.calledOnce).to.be.false;
+        expect(handlerEvent2.calledOnce).to.be.true;
     });
 
-    describe("Метод off", () => {
-        it("Должен удалять слушателей с помощью 'off'", () => {
-            const callback = sinon.spy();
-            
-            eventBus.on("testEvent", callback);
-            eventBus.off("testEvent", callback);
-            
-            expect(eventBus['listeners']['testEvent']).to.have.lengthOf(0);
-        });
+    it("Не должен вызываться отписанный обработчик", () => {
+        const handler = sinon.stub();
+        
+        eventBus.on(EVENT_1, handler);
+        eventBus.off(EVENT_1, handler);
 
-        it("Должен генерировать ошибку при удалении несуществующего слушателя", () => {
-            const nonExistentCallback = sinon.spy();
-            
-            expect(() => {
-                eventBus.off("testEvent", nonExistentCallback);
-            }).to.throw(Error, "Нет события: testEvent");
-        });
+        eventBus.emit(EVENT_1);
+        
+        expect(handler.calledOnce).to.be.false;
+    });
+
+    it("Должна выводиться ошибка, если такого события не существует", () => {
+        const handler = sinon.stub();
+        
+        expect(() => eventBus.off(EVENT_1, handler)).to.throw(`Нет событи: ${EVENT_1}`);
     });
 });

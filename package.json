@@ -12,7 +12,9 @@
         "check-styles": "stylelint '**/*.styl'",
         "check-scripts": "eslint '**/*.ts'",
         "lint": "npm run check-types && npm run check-styles && npm run check-scripts",
-        "test": "mocha"
+        "test": "mocha",
+        "validate": "npm-run-all --parallel test lint",
+        "precommit": "npm run validate"
     },
     "devDependencies": {
         "@eslint/js": "^9.16.0",

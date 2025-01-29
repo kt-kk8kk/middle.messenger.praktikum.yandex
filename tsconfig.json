@@ -18,6 +18,10 @@
         "sourceMap": true,
         "strictNullChecks": true
     },
+    "ts-node": {
+        "experimentalSpecifierResolution": "node",
+        "transpileOnly": true
+    },
     "include": [
         "src",
         "globals.d.ts"

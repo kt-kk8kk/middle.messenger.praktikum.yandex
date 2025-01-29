@@ -72,12 +72,12 @@ export type ChatsDeleteDTO = {
 }
 
 export type ChatsAddUserDTO = {
-    users: Number[],
+    users: number[],
     chatId?: number,
 }
 
 export type ChatsDeleteUserDTO = {
-    users?: Number[],
+    users?: number[],
     chatId?: number,
 }
 
